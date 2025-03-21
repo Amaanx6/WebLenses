@@ -2,7 +2,7 @@ chrome.action.onClicked.addListener(tab => {
     chrome.scripting.executeScript({
         target: {tabId: tab.id},
         func: () => {
-            alert("Hello From My Extension");
+            alert("Hello From My Extens")
         }
-    });
-});
+    })
+})

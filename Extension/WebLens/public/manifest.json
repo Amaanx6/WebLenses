@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "WebLens",
+    "version": "1.0.0",
+    "action": {
+      "default_popup": "index.html",
+      "default_icon": {
+        "32": "icon32.png"
+      }
+    },
+    "permissions": [
+      "activeTab",
+      "scripting"
+    ],
+    "host_permissions": ["<all_urls>"],
+    "icons": {
+      "32": "icon32.png"
+    }
+  }

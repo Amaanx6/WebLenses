@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Extension popup specific styles */
+@layer base {
+  html {
+    @apply bg-gray-900 text-gray-100;
+  }
+  
+  #root {
+    @apply w-full h-full min-h-[500px] p-4;
+  }
+}
