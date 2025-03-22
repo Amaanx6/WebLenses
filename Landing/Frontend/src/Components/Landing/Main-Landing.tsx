@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   GitBranch,
-  GitCommit,
   Github,
   Twitter,
   MessageSquare,
@@ -16,24 +15,22 @@ import {
   X,
   Undo,
   Redo,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react"
-import { Button } from "../ui/button" 
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card" 
-import { Badge } from "../ui/badge" 
-import HexagonalBackground from "../Landing/hexagonal-background" 
-import HeroSection from "../Landing/hero-section" 
-// import PricingSection from "../Landing/pricing-section" 
-import DemoSection from "../Landing/demo-section" 
-import TeamSection from "../Landing/team-section" 
+import { Button } from "../ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
+import { Badge } from "../ui/badge"
+import HexagonalBackground from "../Landing/hexagonal-background"
+import HeroSection from "../Landing/hero-section"
+import DemoSection from "../Landing/demo-section"
+import TeamSection from "../Landing/team-section"
 
 export default function Landing() {
   const [extensionActive, setExtensionActive] = useState(true)
-  const [commits, setCommits] = useState<Commit[]>([
-    { id: 1, message: "Initial state", timestamp: formatTime(new Date()), author: "WebLenses", aiGenerated: false },
-  ])
-  const [currentCommitId, setCurrentCommitId] = useState(1)
+  const [commits, setCommits] = useState<Commit[]>([])
+  const [currentCommitId, setCurrentCommitId] = useState(0)
   const [diffVisible, setDiffVisible] = useState(false)
-  const [floatingLogVisible, setFloatingLogVisible] = useState(true)
   const [undoStack, setUndoStack] = useState<number[]>([])
   const [redoStack, setRedoStack] = useState<number[]>([])
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -59,6 +56,7 @@ export default function Landing() {
   ])
   const [glassEffect, setGlassEffect] = useState(50)
   const [animationSpeed, setAnimationSpeed] = useState(50)
+  const [carouselIndex, setCarouselIndex] = useState(0)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -75,7 +73,7 @@ export default function Landing() {
       id: commits.length + 1,
       message,
       timestamp: formatTime(new Date()),
-      author: aiGenerated ? "WebLenses AI" : "WebLenses",
+      author: aiGenerated ? "AI" : "User",
       aiGenerated,
     }
     setRedoStack([])
@@ -188,7 +186,7 @@ export default function Landing() {
     ])
     setGlassEffect(50)
     setAnimationSpeed(50)
-    addCommit("Reset all UI changes to initial state", false)
+    addCommit("Reset all UI changes", false)
   }
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
@@ -196,17 +194,123 @@ export default function Landing() {
   const getAnimationDuration = () => (1 - (animationSpeed / 100) * 0.8).toFixed(1)
   const getBackdropBlur = () => `blur(${Math.floor(glassEffect / 5)}px)`
 
+  const featureCards = [
+    {
+      icon: <Code className="h-6 w-6 text-emerald-400" />,
+      title: "Zero Installation 🚀",
+      shortDescription: "Works as a Chrome extension—no setup or coding required.",
+      description: (
+        <div className="space-y-2">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Start tracking UI changes instantly on any website.</li>
+            <li>Lightweight, hassle-free, and seamlessly integrates into your workflow.</li>
+            <li>No setup or coding required—just install and go.</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Layers className="h-6 w-6 text-emerald-400" />,
+      title: "Version Control for UI 🔄",
+      shortDescription: "Automatically track UI changes like commits in Git.",
+      description: (
+        <div className="space-y-2">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Roll back to any previous state with a single click.</li>
+            <li>Maintain a complete history of UI modifications for debugging and testing.</li>
+            <li>Track changes automatically, Git-style.</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Users className="h-6 w-6 text-emerald-400" />,
+      title: "Team Collaboration 🤝",
+      shortDescription: "Share test histories and commit logs effortlessly.",
+      description: (
+        <div className="space-y-2">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Keep everyone aligned on UI changes in real time.</li>
+            <li>Improve debugging and prevent miscommunication between teams.</li>
+            <li>Share effortlessly with your team.</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Code className="h-6 w-6 text-emerald-400" />,
+      title: "DOM Diff Analysis 🔍",
+      shortDescription: "Detect and highlight changes in the DOM structure between commits.",
+      description: (
+        <div className="space-y-2">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Identify added, removed, or modified elements instantly.</li>
+            <li>Ensure UI consistency and prevent unintended modifications.</li>
+            <li>Highlight DOM changes with precision.</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Eye className="h-6 w-6 text-emerald-400" />,
+      title: "Visual Regression Testing 📸",
+      shortDescription: "Compare screenshots between commits to spot UI shifts.",
+      description: (
+        <div className="space-y-2">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Highlight unintended design changes automatically.</li>
+            <li>Maintain pixel-perfect consistency across updates and devices.</li>
+            <li>Compare screenshots effortlessly.</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Brain className="h-6 w-6 text-emerald-400" />,
+      title: "AI-Powered Insights 🤖✨",
+      shortDescription: "Coming soon: Detect unexpected UI changes using machine learning.",
+      description: (
+        <div className="space-y-2">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Get smart alerts for potential design inconsistencies.</li>
+            <li>Automate visual testing and anomaly detection with AI.</li>
+            <li>Detect unexpected changes intelligently.</li>
+          </ul>
+        </div>
+      ),
+      isFuture: true,
+    },
+  ]
+
+  const handleNext = () => {
+    setCarouselIndex((prev) => (prev >= featureCards.length - 3 ? 0 : prev + 3))
+  }
+
+  const handlePrev = () => {
+    setCarouselIndex((prev) => (prev === 0 ? featureCards.length - 3 : prev - 3))
+  }
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+  }
+
   return (
     <div
       className="min-h-screen text-white relative overflow-hidden transition-colors duration-500"
       style={{ backgroundColor }}
     >
       <HexagonalBackground scrollEffect={true} parallaxOffset={parallaxOffset} />
-      <AnimatePresence>
-        {floatingLogVisible && (
-          <FloatingCommitLog commits={commits.slice(-5).reverse()} onClose={() => setFloatingLogVisible(false)} />
-        )}
-      </AnimatePresence>
 
       <AnimatePresence>
         {diffVisible && (
@@ -243,14 +347,6 @@ export default function Landing() {
           className="bg-black/50 backdrop-blur-md border-gray-800 hover:bg-gray-900/50"
         >
           <Redo className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setFloatingLogVisible(!floatingLogVisible)}
-          className="bg-black/50 backdrop-blur-md border-gray-800 hover:bg-gray-900/50"
-        >
-          <GitCommit className="h-4 w-4" />
         </Button>
         <Button
           variant="outline"
@@ -360,53 +456,91 @@ export default function Landing() {
         </header>
 
         <HeroSection />
+
         {featuresVisible && (
           <section id="features" className="py-16 px-4 bg-gradient-to-b from-transparent to-gray-900/30">
             <div className="container mx-auto">
               <div className="text-center mb-12">
                 <Badge variant="outline" className="mb-4 px-4 py-1 border-emerald-500 text-emerald-400">Features</Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose WebLenses?</h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Why Choose <span className="text-emerald-500">WebLenses</span>?
+                </h2>
                 <p className="text-gray-400 max-w-2xl mx-auto">
                   Everything you need to track, analyze, and manage UI changes during testing
                 </p>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <FeatureCard
-                  icon={<GitCommit className="h-6 w-6 text-emerald-400" />}
-                  title="Zero Installation"
-                  description="Works as a Chrome extension. No complex setup or configuration required."
-                />
-                <FeatureCard
-                  icon={<Layers className="h-6 w-6 text-emerald-400" />}
-                  title="Version Control for UI"
-                  description="Rollback to any previous UI state with a single click."
-                />
-                <FeatureCard
-                  icon={<Users className="h-6 w-6 text-emerald-400" />}
-                  title="Team Collaboration"
-                  description="Share test histories easily with your team."
-                />
-                <FeatureCard
-                  icon={<Code className="h-6 w-6 text-emerald-400" />}
-                  title="DOM Diff Analysis"
-                  description="See exactly what changed on the page between commits."
-                />
-                <FeatureCard
-                  icon={<Eye className="h-6 w-6 text-emerald-400" />}
-                  title="Visual Regression Testing"
-                  description="Compare screenshots between commits."
-                />
-                <FeatureCard
-                  icon={<Brain className="h-6 w-6 text-emerald-400" />}
-                  title="AI-Powered Insights"
-                  description="Coming soon: Detect unexpected UI changes with AI."
-                  isFuture={true}
-                />
+              <div className="relative max-w-7xl mx-auto">
+                <div className="flex items-center justify-center gap-6 overflow-hidden">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handlePrev}
+                    disabled={featureCards.length <= 3}
+                    className="absolute left-0 z-10 bg-gray-800/50 hover:bg-gray-800 transition-colors"
+                    aria-label="Previous"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </Button>
+
+                  <AnimatePresence initial={false} custom={carouselIndex}>
+                    <motion.div
+                      key={carouselIndex}
+                      custom={carouselIndex}
+                      variants={slideVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
+                      className="flex items-center justify-center gap-6"
+                    >
+                      {[0, 1, 2].map((offset) => {
+                        const index = (carouselIndex + offset) % featureCards.length;
+                        const card = featureCards[index];
+                        return (
+                          <FeatureCard
+                            key={card.title}
+                            className={`w-64 ${
+                              offset === 1
+                                ? "transform scale-105 z-20 shadow-xl"
+                                : "transform scale-95 opacity-80 z-10"
+                            }`}
+                            {...card}
+                          />
+                        );
+                      })}
+                    </motion.div>
+                  </AnimatePresence>
+
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handleNext}
+                    disabled={featureCards.length <= 3}
+                    className="absolute right-0 z-10 bg-gray-800/50 hover:bg-gray-800 transition-colors"
+                    aria-label="Next"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </Button>
+                </div>
+
+                {/* Pagination Dots */}
+                <div className="flex justify-center mt-6 space-x-2">
+                  {Array.from({ length: Math.ceil(featureCards.length / 3) }).map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCarouselIndex(i * 3)}
+                      className={`w-3 h-3 rounded-full ${
+                        carouselIndex === i * 3 ? "bg-emerald-500" : "bg-gray-700"
+                      }`}
+                      aria-label={`Go to page ${i + 1}`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </section>
         )}
-       
+
         <DemoSection
           headerText={headerText}
           subheaderText={subheaderText}
@@ -479,117 +613,41 @@ export default function Landing() {
   )
 }
 
-function FeatureCard({ icon, title, description, isFuture = false }: {
+function FeatureCard({ icon, title, shortDescription, description, isFuture = false, className }: {
   icon: React.ReactNode
   title: string
-  description: string
+  shortDescription: string
+  description: React.ReactNode
   isFuture?: boolean
+  className?: string
 }) {
   return (
-    <motion.div whileHover={{ y: -5 }} className="group">
-      <Card className="h-full bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden group-hover:border-emerald-900/50 transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.05)] group-hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]">
-        <CardHeader>
-          <div className="flex justify-between items-start">
-            <motion.div whileHover={{ rotate: [0, -10, 10, -5, 0] }} transition={{ duration: 0.5 }}>{icon}</motion.div>
-            {isFuture && (
-              <Badge variant="outline" className="bg-emerald-950/30 text-emerald-400 border-emerald-800">Coming Soon</Badge>
-            )}
-          </div>
-          <CardTitle className="mt-4 group-hover:text-emerald-400 transition-colors">{title}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-gray-400 group-hover:text-gray-300 transition-colors">{description}</p>
-          <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/0 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-        </CardContent>
-      </Card>
-    </motion.div>
-  )
-}
-
-function FloatingCommitLog({ commits, onClose }: { commits: Commit[]; onClose: () => void }) {
-  const [position, setPosition] = useState({ x: 20, y: 20 })
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true)
-    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y })
-  }
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
-      const newX = e.clientX - dragStart.x
-      const newY = e.clientY - dragStart.y
-      setPosition({ x: newX, y: newY })
-      const tiltX = e.movementY * 0.5
-      const tiltY = e.movementX * -0.5
-      setTilt({ x: tiltX, y: tiltY })
-    }
-  }
-
-  const handleMouseUp = () => {
-    setIsDragging(false)
-    setTimeout(() => setTilt({ x: 0, y: 0 }), 300)
-  }
-
-  const handleMouseEnter = () => {
-    setTilt({ x: 5, y: 0 })
-    setTimeout(() => setTilt({ x: 0, y: 0 }), 300)
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      style={{ left: position.x, top: position.y, transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` }}
-      className="fixed z-50 w-80 transition-transform duration-300"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-      onMouseEnter={handleMouseEnter}
+    <Card
+      className={`group bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.05)] hover:border-emerald-900/50 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] ${className}`}
     >
-      <div className="bg-black/80 backdrop-blur-xl border border-gray-800 rounded-lg shadow-[0_0_25px_rgba(16,185,129,0.15)] overflow-hidden cursor-move">
-        <div className="p-3 border-b border-gray-800 flex justify-between items-center bg-gray-900/50">
-          <div className="flex items-center gap-2">
-            <GitCommit className="h-4 w-4 text-emerald-400" />
-            <span className="font-medium text-sm">WebLenses Commit Log</span>
-          </div>
-          <Button variant="ghost" size="icon" className="h-6 w-6" onClick={onClose}>
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-        <div className="max-h-[300px] overflow-y-auto p-3 space-y-2">
-          <AnimatePresence>
-            {commits.map((commit) => (
-              <motion.div
-                key={commit.id}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, height: 0 }}
-                className="p-2 rounded-md text-xs border bg-gray-900/50 border-gray-800"
-              >
-                <div className="flex justify-between items-start">
-                  <span className="font-medium">#{commit.id}</span>
-                  <div className="flex items-center gap-1">
-                    {commit.aiGenerated && (
-                      <Badge variant="outline" className="px-1 py-0 text-[10px] border-emerald-800 bg-emerald-950/30 text-emerald-400">AI</Badge>
-                    )}
-                    <span className="text-gray-500">{commit.timestamp}</span>
-                  </div>
-                </div>
-                <p className="mt-1">{commit.message}</p>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-          {commits.length === 0 && (
-            <div className="text-center py-4 text-gray-500 text-sm"><p>No recent commits</p></div>
+      <CardHeader className="relative p-4">
+        <div className="flex justify-between items-start">
+          <motion.div whileHover={{ rotate: [0, -10, 10, -5, 0] }} transition={{ duration: 0.5 }}>{icon}</motion.div>
+          {isFuture && (
+            <Badge variant="outline" className="bg-emerald-950/30 text-emerald-400 border-emerald-800">Coming Soon</Badge>
           )}
         </div>
-      </div>
-    </motion.div>
+        <CardTitle className="mt-2 text-lg group-hover:text-emerald-400 transition-colors">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="p-4 pt-0">
+        <p className="text-sm text-gray-400">{shortDescription}</p>
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 0, height: 0 }}
+          whileHover={{ opacity: 1, height: "auto" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="text-gray-400 group-hover:text-gray-300 overflow-hidden"
+        >
+          {description}
+        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/0 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      </CardContent>
+    </Card>
   )
 }
 
