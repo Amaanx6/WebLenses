@@ -1,12 +1,9 @@
-
-import Chatbot from './components/Chatbot'
+// App.tsx
+import Dashboard from './components/Dashboard';
 
 function App() {
-  return (
-    
-      <Chatbot />
-    
-  );
+  return <Dashboard />;
 }
 
-export default App
+
+export default App;
