@@ -22,7 +22,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { Badge } from "../ui/badge" 
 import HexagonalBackground from "../Landing/hexagonal-background" 
 import HeroSection from "../Landing/hero-section" 
-import PricingSection from "../Landing/pricing-section" 
+// import PricingSection from "../Landing/pricing-section" 
 import DemoSection from "../Landing/demo-section" 
 import TeamSection from "../Landing/team-section" 
 
@@ -406,7 +406,7 @@ export default function Landing() {
             </div>
           </section>
         )}
-        <PricingSection />
+       
         <DemoSection
           headerText={headerText}
           subheaderText={subheaderText}
