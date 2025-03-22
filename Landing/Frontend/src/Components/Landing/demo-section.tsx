@@ -74,8 +74,11 @@ export default function DemoSection({
       style={{ backdropFilter: glassEffect }}
       onMouseMove={handleMouseMove}
     >
+      {/* Hexagonal Background (unchanged from original) */}
       <HexagonalBackground scrollEffect={false} parallaxOffset={parallaxOffset} />
+
       <div className="container mx-auto relative z-10">
+        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -87,15 +90,11 @@ export default function DemoSection({
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{headerText}</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">{subheaderText}</p>
-          {ctaVisible && (
-            <Button className="mt-6 bg-emerald-500 hover:bg-emerald-600">
-              Get Started
-            </Button>
-          )}
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-start">
-          <Card className="bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+        {/* Centered Interactive Demo Card */}
+        <div className="flex justify-center mb-12">
+          <Card className="bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)] w-full max-w-2xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <GitCommit className="h-5 w-5 text-emerald-400" />
@@ -143,60 +142,62 @@ export default function DemoSection({
               </div>
             </CardContent>
           </Card>
+        </div>
 
-          <div className="space-y-6">
-            <Card className="bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)]">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Layers className="h-5 w-5 text-emerald-400" />
-                  DOM Tree Visualization
-                </CardTitle>
-                <CardDescription>See how WebLenses tracks changes in the DOM structure</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="p-4 bg-gray-900/50 rounded border border-gray-800">
-                  <div className="flex items-start">
-                    <div className="flex flex-col items-center mr-2">
-                      <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-                      <div className="w-0.5 h-8 bg-gray-700"></div>
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium">html</div>
-                      <div className="ml-4 mt-1">
-                        <div className="flex items-start">
-                          <div className="flex flex-col items-center mr-2">
-                            <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-                            <div className="w-0.5 h-8 bg-gray-700"></div>
-                          </div>
-                          <div>
-                            <div className="text-sm font-medium">body</div>
-                            <div className="ml-4 mt-1">
-                              <div className="flex items-start">
-                                <div className="flex flex-col items-center mr-2">
-                                  <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-                                  <div className="w-0.5 h-8 bg-gray-700"></div>
-                                </div>
-                                <div>
-                                  <div className="text-sm font-medium">div.container</div>
-                                  <div className="ml-4 mt-1">
-                                    <div className="flex items-start">
-                                      <div className="flex flex-col items-center mr-2">
-                                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                      </div>
-                                      <div>
-                                        <div className="text-sm font-medium">
-                                          h3 <span className="text-yellow-500 text-xs">(modified)</span>
-                                        </div>
+        {/* Card Grid */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* DOM Tree Visualization Card */}
+          <Card className="bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Layers className="h-5 w-5 text-emerald-400" />
+                DOM Tree Visualization
+              </CardTitle>
+              <CardDescription>See how WebLenses tracks changes in the DOM structure</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="p-4 bg-gray-900/50 rounded border border-gray-800">
+                <div className="flex items-start">
+                  <div className="flex flex-col items-center mr-2">
+                    <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    <div className="w-0.5 h-8 bg-gray-700"></div>
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium">html</div>
+                    <div className="ml-4 mt-1">
+                      <div className="flex items-start">
+                        <div className="flex flex-col items-center mr-2">
+                          <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                          <div className="w-0.5 h-8 bg-gray-700"></div>
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium">body</div>
+                          <div className="ml-4 mt-1">
+                            <div className="flex items-start">
+                              <div className="flex flex-col items-center mr-2">
+                                <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                                <div className="w-0.5 h-8 bg-gray-700"></div>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium">div.container</div>
+                                <div className="ml-4 mt-1">
+                                  <div className="flex items-start">
+                                    <div className="flex flex-col items-center mr-2">
+                                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    </div>
+                                    <div>
+                                      <div className="text-sm font-medium">
+                                        h3 <span className="text-yellow-500 text-xs">(modified)</span>
                                       </div>
                                     </div>
-                                    <div className="flex items-start mt-2">
-                                      <div className="flex flex-col items-center mr-2">
-                                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                                      </div>
-                                      <div>
-                                        <div className="text-sm font-medium">
-                                          div.element <span className="text-red-500 text-xs">(toggled)</span>
-                                        </div>
+                                  </div>
+                                  <div className="flex items-start mt-2">
+                                    <div className="flex flex-col items-center mr-2">
+                                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                    </div>
+                                    <div>
+                                      <div className="text-sm font-medium">
+                                        div.element <span className="text-red-500 text-xs">(toggled)</span>
                                       </div>
                                     </div>
                                   </div>
@@ -209,38 +210,42 @@ export default function DemoSection({
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </CardContent>
+          </Card>
 
-            <Card className="bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)]">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <GitCommit className="h-5 w-5 text-emerald-400" />
-                  Commit Log
-                </CardTitle>
-                <CardDescription>WebLenses records each UI change as a commit</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3 max-h-[300px] overflow-y-auto">
-                  {commits.map((commit, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: Number(animationDuration) }}
-                      className="p-3 rounded-md text-sm border bg-gray-900/50 border-gray-800"
-                    >
-                      <div className="flex justify-between items-start">
-                        <span className="font-medium">#{commits.length - index}</span>
-                        <span className="text-xs text-gray-500">{commit.timestamp}</span>
-                      </div>
-                      <p className="mt-1">{commit.message}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+          {/* Commit Log Card */}
+          <Card className="bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <GitCommit className="h-5 w-5 text-emerald-400" />
+                Commit Log
+              </CardTitle>
+              <CardDescription>WebLenses records each UI change as a commit</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 max-h-[300px] overflow-y-auto">
+                {commits.map((commit, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: Number(animationDuration) }}
+                    className="p-3 rounded-md text-sm border bg-gray-900/50 border-gray-800"
+                  >
+                    <div className="flex justify-between items-start">
+                      <span className="font-medium">#{commits.length - index}</span>
+                      <span className="text-xs text-gray-500">{commit.timestamp}</span>
+                    </div>
+                    <p className="mt-1">{commit.message}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
+          {/* Testimonials Card (Full Width) */}
+          <div className="md:col-span-2">
             <Card className="bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.1)]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -268,6 +273,15 @@ export default function DemoSection({
             </Card>
           </div>
         </div>
+
+        {/* Get Started Button */}
+        {ctaVisible && (
+          <div className="flex justify-center mt-12">
+            <Button className="bg-emerald-500 hover:bg-emerald-600">
+              Get Started
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   )
