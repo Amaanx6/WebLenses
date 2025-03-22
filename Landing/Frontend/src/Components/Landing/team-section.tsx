@@ -1,43 +1,40 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Twitter, Linkedin } from "lucide-react"
+import { Github, Twitter, Linkedin, User } from "lucide-react"
 import { Card, CardContent } from "../ui/card"
 import { Badge } from "../ui/badge"
 
 export default function TeamSection() {
   const teamMembers = [
     {
-      name: "Sarah Johnson",
-      role: "Founder & CEO",
-      description: "Former QA lead with 10+ years of experience in UI testing",
-      image: "/placeholder.svg?height=200&width=200",
+      name: "Mohammed Sarwar Khan",
+      role: "Team Lead",
+      description: "Building dreams with the MERN stack's might, crafting apps that shine so bright. A 4rd-sem intern on a soaring flight, coding stories deep into the night.",
       social: {
-        twitter: "#",
-        github: "#",
-        linkedin: "#",
+        twitter: "https://x.com/mohfazam",
+        github: "https://github.com/Mohfazam",
+        linkedin: "https://www.linkedin.com/in/mohammed-sarwar-khan/",
       },
     },
     {
-      name: "Michael Chen",
-      role: "CTO",
-      description: "Full-stack developer specializing in browser extensions and testing tools",
-      image: "/placeholder.svg?height=200&width=200",
+      name: "Md Mubashiruddin",
+      role: "Lead Developer",
+      description: "Expert in implementing complex features and maintaining code quality through rigorous development practices.",
       social: {
-        twitter: "#",
-        github: "#",
-        linkedin: "#",
+        twitter: "https://x.com/amaanx_6",
+        github: "https://github.com/amaanx6",
+        linkedin: "https://www.linkedin.com/in/md-mubashiruddin/",
       },
     },
     {
-      name: "Alex Rodriguez",
+      name: "Mohammed Talha Ahmed Siddique",
       role: "Lead Designer",
-      description: "UX/UI expert focused on creating intuitive testing experiences",
-      image: "/placeholder.svg?height=200&width=200",
+      description: "An undergrad refining skills with MERN in hand, deploying apps with DevOps to take a stand. Crafting solutions that work across the land, the digital world is mine to command.",
       social: {
         twitter: "#",
-        github: "#",
-        linkedin: "#",
+        github: "https://github.com/talhadevelopes",
+        linkedin: "https://www.linkedin.com/in/mohammed-talha-ahmed-6871a42ab/",
       },
     },
   ]
@@ -67,12 +64,10 @@ export default function TeamSection() {
               <Card className="bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden shadow-[0_0_15px_rgba(16,185,129,0.05)]">
                 <CardContent className="p-0">
                   <div className="relative overflow-hidden h-48 bg-gradient-to-br from-emerald-900/30 to-blue-900/30">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <img
-                        src={member.image || "/placeholder.svg"}
-                        alt={member.name}
-                        className="w-24 h-24 rounded-full border-2 border-emerald-500 object-cover"
-                      />
+                    <div className="absolute inset-0 flex items-center justify-center -translate-y-6">
+                      <div className="w-24 h-24 rounded-full border-2 border-emerald-500 bg-black/40 flex items-center justify-center">
+                        <User className="w-12 h-12 text-emerald-400" />
+                      </div>
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
@@ -109,4 +104,3 @@ export default function TeamSection() {
     </section>
   )
 }
-

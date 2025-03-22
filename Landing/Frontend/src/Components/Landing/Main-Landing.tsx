@@ -26,7 +26,7 @@ import PricingSection from "../Landing/pricing-section"
 import DemoSection from "../Landing/demo-section" 
 import TeamSection from "../Landing/team-section" 
 
-export default function Landing() { // Default export
+export default function Landing() {
   const [extensionActive, setExtensionActive] = useState(true)
   const [commits, setCommits] = useState<Commit[]>([
     { id: 1, message: "Initial state", timestamp: formatTime(new Date()), author: "WebLenses", aiGenerated: false },
@@ -356,10 +356,6 @@ export default function Landing() { // Default export
               <a href="#demo" className="hover:text-emerald-400 transition-colors">Demo</a>
               <a href="#team" className="hover:text-emerald-400 transition-colors">Team</a>
             </nav>
-            <div className="flex gap-2">
-              <Button variant="outline" className="border-emerald-500 text-emerald-400 hover:bg-emerald-950">Login</Button>
-              <Button className="bg-emerald-500 hover:bg-emerald-600">Sign Up</Button>
-            </div>
           </div>
         </header>
 
