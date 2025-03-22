@@ -6,6 +6,7 @@ import { GitCommit, PaintBucket, Type, Eye, EyeOff, Layers } from "lucide-react"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Badge } from "../ui/badge"
+import HexagonalBackground from "./hexagonal-background" // Adjust path based on your project structure
 
 interface DemoSectionProps {
   headerText: string
@@ -30,6 +31,14 @@ export default function DemoSection({
   const [commits, setCommits] = useState<{ message: string; timestamp: string }[]>([
     { message: "Initial state", timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) },
   ])
+  const [parallaxOffset, setParallaxOffset] = useState({ x: 0, y: 0 })
+
+  // Add mouse move handler for parallax effect
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 20
+    const y = (e.clientY / window.innerHeight - 0.5) * 20
+    setParallaxOffset({ x, y })
+  }
 
   const addCommit = (message: string) => {
     const now = new Date()
@@ -61,10 +70,12 @@ export default function DemoSection({
   return (
     <section
       id="demo"
-      className="py-16 px-4 bg-gradient-to-b from-transparent to-gray-900/30"
+      className="py-16 px-4 relative overflow-hidden bg-gradient-to-b from-transparent to-gray-900/30"
       style={{ backdropFilter: glassEffect }}
+      onMouseMove={handleMouseMove}
     >
-      <div className="container mx-auto">
+      <HexagonalBackground scrollEffect={false} parallaxOffset={parallaxOffset} />
+      <div className="container mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -261,4 +272,3 @@ export default function DemoSection({
     </section>
   )
 }
-

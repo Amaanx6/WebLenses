@@ -22,7 +22,8 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
           >
-            WebLenses – Version Control for UI Testing
+            WebLenses – Version Control for{" "}
+            <span className="text-emerald-500">UI Testing</span>
           </motion.h1>
 
           <motion.p
@@ -97,4 +98,3 @@ export default function HeroSection() {
     </section>
   )
 }
-

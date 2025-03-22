@@ -16,13 +16,14 @@ import {
   X,
   Undo,
   Redo,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react"
 import { Button } from "../ui/button" 
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card" 
 import { Badge } from "../ui/badge" 
 import HexagonalBackground from "../Landing/hexagonal-background" 
 import HeroSection from "../Landing/hero-section" 
-// import PricingSection from "../Landing/pricing-section" 
 import DemoSection from "../Landing/demo-section" 
 import TeamSection from "../Landing/team-section" 
 
@@ -59,6 +60,7 @@ export default function Landing() {
   ])
   const [glassEffect, setGlassEffect] = useState(50)
   const [animationSpeed, setAnimationSpeed] = useState(50)
+  const [carouselIndex, setCarouselIndex] = useState(0)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -195,6 +197,118 @@ export default function Landing() {
 
   const getAnimationDuration = () => (1 - (animationSpeed / 100) * 0.8).toFixed(1)
   const getBackdropBlur = () => `blur(${Math.floor(glassEffect / 5)}px)`
+
+  const featureCards = [
+    {
+      icon: <GitCommit className="h-8 w-8 text-emerald-400" />,
+      title: "Zero Installation",
+      shortDescription: "Works as a Chrome extension with no complex setup needed.",
+      description: (
+        <div className="space-y-3">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Install in seconds from Chrome Web Store</li>
+            <li>No server configuration required</li>
+            <li>Works instantly with existing projects</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+            <li>Sed do eiusmod tempor incididunt ut labore et dolore</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Layers className="h-8 w-8 text-emerald-400" />,
+      title: "Version Control for UI",
+      shortDescription: "Rollback to any previous UI state with a single click.",
+      description: (
+        <div className="space-y-3">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Track UI changes over time</li>
+            <li>Compare different versions side-by-side</li>
+            <li>Revert to stable states instantly</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+            <li>Sed do eiusmod tempor incididunt ut labore et dolore</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Users className="h-8 w-8 text-emerald-400" />,
+      title: "Team Collaboration",
+      shortDescription: "Share test histories easily with your team.",
+      description: (
+        <div className="space-y-3">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Export test results in multiple formats</li>
+            <li>Real-time collaboration features</li>
+            <li>Team dashboard integration</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+            <li>Sed do eiusmod tempor incididunt ut labore et dolore</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Code className="h-8 w-8 text-emerald-400" />,
+      title: "DOM Diff Analysis",
+      shortDescription: "See exactly what changed on the page between commits.",
+      description: (
+        <div className="space-y-3">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Visual DOM difference highlighting</li>
+            <li>Detailed change tracking</li>
+            <li>Element-level comparison</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+            <li>Sed do eiusmod tempor incididunt ut labore et dolore</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Eye className="h-8 w-8 text-emerald-400" />,
+      title: "Visual Regression Testing",
+      shortDescription: "Compare screenshots between commits.",
+      description: (
+        <div className="space-y-3">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Automated screenshot capture</li>
+            <li>Side-by-side comparison view</li>
+            <li>Pixel-level difference detection</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+            <li>Sed do eiusmod tempor incididunt ut labore et dolore</li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      icon: <Brain className="h-8 w-8 text-emerald-400" />,
+      title: "AI-Powered Insights",
+      shortDescription: "Coming soon: Detect unexpected UI changes with AI.",
+      description: (
+        <div className="space-y-3">
+          <ul className="list-disc pl-5 text-sm">
+            <li>Smart anomaly detection</li>
+            <li>Predictive change analysis</li>
+            <li>Automated issue reporting</li>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+            <li>Sed do eiusmod tempor incididunt ut labore et dolore</li>
+          </ul>
+        </div>
+      ),
+      isFuture: true,
+    },
+  ]
+
+  const handleNext = () => {
+    if (carouselIndex < featureCards.length - 3) {
+      setCarouselIndex(carouselIndex + 3)
+    }
+  }
+
+  const handlePrev = () => {
+    if (carouselIndex > 0) {
+      setCarouselIndex(carouselIndex - 3)
+    }
+  }
 
   return (
     <div
@@ -360,48 +474,54 @@ export default function Landing() {
         </header>
 
         <HeroSection />
+        
         {featuresVisible && (
           <section id="features" className="py-16 px-4 bg-gradient-to-b from-transparent to-gray-900/30">
             <div className="container mx-auto">
               <div className="text-center mb-12">
                 <Badge variant="outline" className="mb-4 px-4 py-1 border-emerald-500 text-emerald-400">Features</Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose WebLenses?</h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Why Choose <span className="text-emerald-500">WebLenses</span>?
+                </h2>
                 <p className="text-gray-400 max-w-2xl mx-auto">
                   Everything you need to track, analyze, and manage UI changes during testing
                 </p>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <FeatureCard
-                  icon={<GitCommit className="h-6 w-6 text-emerald-400" />}
-                  title="Zero Installation"
-                  description="Works as a Chrome extension. No complex setup or configuration required."
-                />
-                <FeatureCard
-                  icon={<Layers className="h-6 w-6 text-emerald-400" />}
-                  title="Version Control for UI"
-                  description="Rollback to any previous UI state with a single click."
-                />
-                <FeatureCard
-                  icon={<Users className="h-6 w-6 text-emerald-400" />}
-                  title="Team Collaboration"
-                  description="Share test histories easily with your team."
-                />
-                <FeatureCard
-                  icon={<Code className="h-6 w-6 text-emerald-400" />}
-                  title="DOM Diff Analysis"
-                  description="See exactly what changed on the page between commits."
-                />
-                <FeatureCard
-                  icon={<Eye className="h-6 w-6 text-emerald-400" />}
-                  title="Visual Regression Testing"
-                  description="Compare screenshots between commits."
-                />
-                <FeatureCard
-                  icon={<Brain className="h-6 w-6 text-emerald-400" />}
-                  title="AI-Powered Insights"
-                  description="Coming soon: Detect unexpected UI changes with AI."
-                  isFuture={true}
-                />
+              <div className="relative max-w-7xl mx-auto">
+                <div className="flex items-center justify-center gap-6">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handlePrev}
+                    disabled={carouselIndex === 0}
+                    className="absolute left-0 z-10 bg-gray-800/50 hover:bg-gray-800 transition-colors"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </Button>
+
+                  <FeatureCard
+                    className="w-80 h-[32rem] transform scale-95 opacity-80 -mr-20 z-10"
+                    {...featureCards[carouselIndex]}
+                  />
+                  <FeatureCard
+                    className="w-80 h-[32rem] transform scale-105 z-20 shadow-xl"
+                    {...featureCards[carouselIndex + 1]}
+                  />
+                  <FeatureCard
+                    className="w-80 h-[32rem] transform scale-95 opacity-80 -ml-20 z-10"
+                    {...featureCards[carouselIndex + 2]}
+                  />
+
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handleNext}
+                    disabled={carouselIndex >= featureCards.length - 3}
+                    className="absolute right-0 z-10 bg-gray-800/50 hover:bg-gray-800 transition-colors"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </Button>
+                </div>
               </div>
             </div>
           </section>
@@ -479,16 +599,22 @@ export default function Landing() {
   )
 }
 
-function FeatureCard({ icon, title, description, isFuture = false }: {
+function FeatureCard({ icon, title, shortDescription, description, isFuture = false, className }: {
   icon: React.ReactNode
   title: string
-  description: string
+  shortDescription: string
+  description: React.ReactNode
   isFuture?: boolean
+  className?: string
 }) {
   return (
-    <motion.div whileHover={{ y: -5 }} className="group">
+    <motion.div
+      className={`group ${className}`}
+      whileHover={{ scale: 1.05, zIndex: 30, opacity: 1, marginLeft: 0, marginRight: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <Card className="h-full bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden group-hover:border-emerald-900/50 transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.05)] group-hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]">
-        <CardHeader>
+        <CardHeader className="relative">
           <div className="flex justify-between items-start">
             <motion.div whileHover={{ rotate: [0, -10, 10, -5, 0] }} transition={{ duration: 0.5 }}>{icon}</motion.div>
             {isFuture && (
@@ -497,8 +623,16 @@ function FeatureCard({ icon, title, description, isFuture = false }: {
           </div>
           <CardTitle className="mt-4 group-hover:text-emerald-400 transition-colors">{title}</CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-gray-400 group-hover:text-gray-300 transition-colors">{description}</p>
+        <CardContent className="space-y-4">
+          <p className="text-gray-400 group-hover:text-gray-300 transition-colors">{shortDescription}</p>
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            whileHover={{ opacity: 1, height: "auto" }}
+            transition={{ duration: 0.3 }}
+            className="text-gray-400 group-hover:text-gray-300 transition-colors overflow-hidden"
+          >
+            {description}
+          </motion.div>
           <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/0 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
         </CardContent>
       </Card>
