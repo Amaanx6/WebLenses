@@ -4,8 +4,12 @@ import { motion } from "framer-motion"
 import { Play } from "lucide-react"
 import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
+import { useNavigate } from "react-router-dom"
+
+
 
 export default function HeroSection() {
+  const navigate = useNavigate();
   return (
     <section className="container mx-auto py-16 md:py-24 px-4">
       <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -43,7 +47,7 @@ export default function HeroSection() {
             className="flex flex-col sm:flex-row gap-4"
           >
             <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 transition-all duration-300 relative">
-              <span className="relative z-10">Get Started for Free</span>
+              <Button onClick={() => navigate("/mind")} className="relative z-10">Get Started for Free</Button>
               <span className="absolute inset-0 rounded-md overflow-hidden">
                 <span className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 opacity-0 hover:opacity-20 transition-opacity duration-300"></span>
                 <span className="absolute -inset-[3px] bg-gradient-to-r from-emerald-500 to-blue-500 opacity-0 hover:opacity-30 blur-md transition-opacity duration-300"></span>

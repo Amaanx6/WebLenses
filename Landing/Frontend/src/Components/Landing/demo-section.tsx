@@ -6,7 +6,9 @@ import { GitCommit, PaintBucket, Type, Eye, EyeOff, Layers } from "lucide-react"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Badge } from "../ui/badge"
-import HexagonalBackground from "./hexagonal-background" // Adjust path based on your project structure
+
+import { useNavigate } from "react-router-dom"
+
 
 interface DemoSectionProps {
   headerText: string
@@ -62,6 +64,7 @@ export default function DemoSection({
     addCommit(`Updated heading text to "${texts[nextIndex]}"`)
   }
 
+  const navigate = useNavigate();
   const toggleElementVisibility = () => {
     setIsElementVisible(!isElementVisible)
     addCommit(`${isElementVisible ? "Hidden" : "Shown"} demo element`)
@@ -90,6 +93,13 @@ export default function DemoSection({
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{headerText}</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">{subheaderText}</p>
+
+          {ctaVisible && (
+            <Button onClick={() => navigate("/mind")} className="mt-6 bg-emerald-500 hover:bg-emerald-600">
+              Get Started
+            </Button>
+          )}
+
         </motion.div>
 
         {/* Centered Interactive Demo Card */}
