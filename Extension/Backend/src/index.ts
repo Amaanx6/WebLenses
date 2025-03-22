@@ -93,6 +93,32 @@ app.get('/api/snapshots/:url/diff', async (req: express.Request, res: express.Re
   }
 });
 
+
+// Add to your existing backend routes
+app.get('/api/websites', async (req: Request, res: Response) => {
+  try {
+    const websites = await Snapshot.distinct('url');
+    res.json(websites);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+//@ts-ignore
+app.get('/api/snapshots/:url/latest', async (req: Request, res: Response) => {
+  try {
+    const snapshot = await Snapshot.findOne({ url: req.params.url })
+      .sort({ createdAt: -1 });
+    
+    if (!snapshot) return res.status(404).json({ error: 'No snapshots found' });
+    
+    res.json({ content: snapshot.content });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
