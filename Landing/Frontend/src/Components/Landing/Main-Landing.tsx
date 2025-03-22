@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   GitBranch,
-  GitCommit,
   Github,
   Twitter,
   MessageSquare,
@@ -19,22 +18,19 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react"
-import { Button } from "../ui/button" 
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card" 
-import { Badge } from "../ui/badge" 
-import HexagonalBackground from "../Landing/hexagonal-background" 
-import HeroSection from "../Landing/hero-section" 
-import DemoSection from "../Landing/demo-section" 
-import TeamSection from "../Landing/team-section" 
+import { Button } from "../ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
+import { Badge } from "../ui/badge"
+import HexagonalBackground from "../Landing/hexagonal-background"
+import HeroSection from "../Landing/hero-section"
+import DemoSection from "../Landing/demo-section"
+import TeamSection from "../Landing/team-section"
 
 export default function Landing() {
   const [extensionActive, setExtensionActive] = useState(true)
-  const [commits, setCommits] = useState<Commit[]>([
-    { id: 1, message: "Initial state", timestamp: formatTime(new Date()), author: "WebLenses", aiGenerated: false },
-  ])
-  const [currentCommitId, setCurrentCommitId] = useState(1)
+  const [commits, setCommits] = useState<Commit[]>([])
+  const [currentCommitId, setCurrentCommitId] = useState(0)
   const [diffVisible, setDiffVisible] = useState(false)
-  const [floatingLogVisible, setFloatingLogVisible] = useState(true)
   const [undoStack, setUndoStack] = useState<number[]>([])
   const [redoStack, setRedoStack] = useState<number[]>([])
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -77,7 +73,7 @@ export default function Landing() {
       id: commits.length + 1,
       message,
       timestamp: formatTime(new Date()),
-      author: aiGenerated ? "WebLenses AI" : "WebLenses",
+      author: aiGenerated ? "AI" : "User",
       aiGenerated,
     }
     setRedoStack([])
@@ -190,7 +186,7 @@ export default function Landing() {
     ])
     setGlassEffect(50)
     setAnimationSpeed(50)
-    addCommit("Reset all UI changes to initial state", false)
+    addCommit("Reset all UI changes", false)
   }
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
@@ -200,7 +196,7 @@ export default function Landing() {
 
   const featureCards = [
     {
-      icon: <GitCommit className="h-8 w-8 text-emerald-400" />,
+      icon: <Code className="h-8 w-8 text-emerald-400" />,
       title: "Zero Installation",
       shortDescription: "Works as a Chrome extension with no complex setup needed.",
       description: (
@@ -316,11 +312,6 @@ export default function Landing() {
       style={{ backgroundColor }}
     >
       <HexagonalBackground scrollEffect={true} parallaxOffset={parallaxOffset} />
-      <AnimatePresence>
-        {floatingLogVisible && (
-          <FloatingCommitLog commits={commits.slice(-5).reverse()} onClose={() => setFloatingLogVisible(false)} />
-        )}
-      </AnimatePresence>
 
       <AnimatePresence>
         {diffVisible && (
@@ -357,14 +348,6 @@ export default function Landing() {
           className="bg-black/50 backdrop-blur-md border-gray-800 hover:bg-gray-900/50"
         >
           <Redo className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setFloatingLogVisible(!floatingLogVisible)}
-          className="bg-black/50 backdrop-blur-md border-gray-800 hover:bg-gray-900/50"
-        >
-          <GitCommit className="h-4 w-4" />
         </Button>
         <Button
           variant="outline"
@@ -474,7 +457,7 @@ export default function Landing() {
         </header>
 
         <HeroSection />
-        
+
         {featuresVisible && (
           <section id="features" className="py-16 px-4 bg-gradient-to-b from-transparent to-gray-900/30">
             <div className="container mx-auto">
@@ -526,7 +509,7 @@ export default function Landing() {
             </div>
           </section>
         )}
-       
+
         <DemoSection
           headerText={headerText}
           subheaderText={subheaderText}
@@ -636,93 +619,6 @@ function FeatureCard({ icon, title, shortDescription, description, isFuture = fa
           <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/0 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
         </CardContent>
       </Card>
-    </motion.div>
-  )
-}
-
-function FloatingCommitLog({ commits, onClose }: { commits: Commit[]; onClose: () => void }) {
-  const [position, setPosition] = useState({ x: 20, y: 20 })
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true)
-    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y })
-  }
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
-      const newX = e.clientX - dragStart.x
-      const newY = e.clientY - dragStart.y
-      setPosition({ x: newX, y: newY })
-      const tiltX = e.movementY * 0.5
-      const tiltY = e.movementX * -0.5
-      setTilt({ x: tiltX, y: tiltY })
-    }
-  }
-
-  const handleMouseUp = () => {
-    setIsDragging(false)
-    setTimeout(() => setTilt({ x: 0, y: 0 }), 300)
-  }
-
-  const handleMouseEnter = () => {
-    setTilt({ x: 5, y: 0 })
-    setTimeout(() => setTilt({ x: 0, y: 0 }), 300)
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      style={{ left: position.x, top: position.y, transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` }}
-      className="fixed z-50 w-80 transition-transform duration-300"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-      onMouseEnter={handleMouseEnter}
-    >
-      <div className="bg-black/80 backdrop-blur-xl border border-gray-800 rounded-lg shadow-[0_0_25px_rgba(16,185,129,0.15)] overflow-hidden cursor-move">
-        <div className="p-3 border-b border-gray-800 flex justify-between items-center bg-gray-900/50">
-          <div className="flex items-center gap-2">
-            <GitCommit className="h-4 w-4 text-emerald-400" />
-            <span className="font-medium text-sm">WebLenses Commit Log</span>
-          </div>
-          <Button variant="ghost" size="icon" className="h-6 w-6" onClick={onClose}>
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-        <div className="max-h-[300px] overflow-y-auto p-3 space-y-2">
-          <AnimatePresence>
-            {commits.map((commit) => (
-              <motion.div
-                key={commit.id}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, height: 0 }}
-                className="p-2 rounded-md text-xs border bg-gray-900/50 border-gray-800"
-              >
-                <div className="flex justify-between items-start">
-                  <span className="font-medium">#{commit.id}</span>
-                  <div className="flex items-center gap-1">
-                    {commit.aiGenerated && (
-                      <Badge variant="outline" className="px-1 py-0 text-[10px] border-emerald-800 bg-emerald-950/30 text-emerald-400">AI</Badge>
-                    )}
-                    <span className="text-gray-500">{commit.timestamp}</span>
-                  </div>
-                </div>
-                <p className="mt-1">{commit.message}</p>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-          {commits.length === 0 && (
-            <div className="text-center py-4 text-gray-500 text-sm"><p>No recent commits</p></div>
-          )}
-        </div>
-      </div>
     </motion.div>
   )
 }
