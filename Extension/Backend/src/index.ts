@@ -119,6 +119,40 @@ app.get('/api/snapshots/:url/latest', async (req: Request, res: Response) => {
   }
 });
 
+// Add this route above the PORT declaration
+app.get('/api/snapshots', async (req: Request, res: Response) => {
+  try {
+    //@ts-ignore
+    console.log('Database name:', mongoose.connection.db.databaseName);
+    console.log('Collection name being queried:', Snapshot.collection.collectionName);
+    
+    // Try a more basic query first
+    const count = await Snapshot.countDocuments();
+    console.log('Total document count:', count);
+    
+    const snapshots = await Snapshot.find().lean();
+    console.log('Query returned documents:', snapshots.length);
+    
+    if (snapshots.length > 0) {
+      console.log('Sample document:', JSON.stringify(snapshots[0]).substring(0, 200) + '...');
+    }
+    
+    // Your existing code...
+    res.json({
+      count: snapshots.length,
+      results: snapshots.map(snapshot => ({
+        id: snapshot._id,
+        url: snapshot.url,
+        createdAt: snapshot.createdAt,
+        content: snapshot.content ? (snapshot.content.slice(0, 100) + '...') : 'No content'
+      }))
+    });
+  } catch (error) {
+    console.error('Error details:', error);
+    res.status(500).json({ error: 'Server error', details: error instanceof Error ? error.message : 'Unknown error' });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
