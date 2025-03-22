@@ -1,5 +1,5 @@
-// DiffViewer.tsx
 import React from 'react';
+import { CheckCircle, AlertCircle } from 'lucide-react';
 
 interface DiffProps {
   changes: Array<{
@@ -10,21 +10,29 @@ interface DiffProps {
 }
 
 export const Diff: React.FC<DiffProps> = ({ changes }) => {
+  const hasChanges = changes.some(part => part.added || part.removed);
+  
   return (
-    <pre className="font-mono text-sm">
-      {changes.map((part, index) => {
-        let color = 'text-gray-300';
-        if (part.added) color = 'text-green-400 bg-green-900/20';
-        if (part.removed) color = 'text-red-400 bg-red-900/20';
-        
-        return (
-          <span key={index} className={color}>
-            {part.value}
-          </span>
-        );
-      })}
-    </pre>
+    <div className="w-full rounded-md overflow-hidden">
+      {hasChanges ? (
+        <div className="flex flex-col items-center text-center py-2">
+          <CheckCircle className="w-5 h-5 text-green-400 mb-2" />
+          <p className="text-gray-400 text-sm mb-2">
+            {changes.length} modifications found
+          </p>
+          <div className="bg-gray-700/30 p-2 rounded-lg text-sm text-gray-300 w-full max-w-xs">
+            Full change history available on{' '}
+            <span className="text-purple-300 font-medium">ChangeArchive</span>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center text-center py-2">
+          <AlertCircle className="w-5 h-5 text-yellow-400 mb-2" />
+          <p className="text-gray-400 text-sm">
+            The DOM structure remains identical
+          </p>
+        </div>
+      )}
+    </div>
   );
 };
-
-// export default Diff;

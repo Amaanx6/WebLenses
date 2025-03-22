@@ -135,11 +135,11 @@ const DomTracker = () => {
       </div>
 
       {currentDiff && (
-        <div className="mt-4 p-4 bg-gray-800 rounded-md">
-          <h3 className="font-semibold mb-2">Changes Detected</h3>
-          <Diff changes={currentDiff.changes} />
-        </div>
-      )}
+  <div className="mt-4 bg-gray-800 rounded-md p-4">
+    <h3 className="font-semibold mb-3 text-center">Changes Detected</h3>
+    <Diff changes={currentDiff.changes} />
+  </div>
+)}
     </div>
   );
 };
