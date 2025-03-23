@@ -455,11 +455,37 @@ export default function Landing() {
               <span className="font-bold text-xl">WebLenses</span>
             </div>
             <nav className="hidden md:flex gap-6">
-              <a href="#features" className="hover:text-emerald-400 transition-colors">Features</a>
-              <a href="#pricing" className="hover:text-emerald-400 transition-colors">Pricing</a>
-              <a href="#demo" className="hover:text-emerald-400 transition-colors">Demo</a>
-              <a href="#team" className="hover:text-emerald-400 transition-colors">Team</a>
-            </nav>
+  <a
+    href="#features"
+    onClick={(e) => {
+      e.preventDefault();
+      document.querySelector('#features')?.scrollIntoView({ behavior: 'smooth' });
+    }}
+    className="hover:text-emerald-400 transition-colors cursor-pointer"
+  >
+    Features
+  </a>
+  <a
+    href="#demo"
+    onClick={(e) => {
+      e.preventDefault();
+      document.querySelector('#demo')?.scrollIntoView({ behavior: 'smooth' });
+    }}
+    className="hover:text-emerald-400 transition-colors cursor-pointer"
+  >
+    Demo
+  </a>
+  <a
+    href="#team"
+    onClick={(e) => {
+      e.preventDefault();
+      document.querySelector('#team')?.scrollIntoView({ behavior: 'smooth' });
+    }}
+    className="hover:text-emerald-400 transition-colors cursor-pointer"
+  >
+    Team
+  </a>
+</nav>
           </div>
         </header>
 
@@ -618,7 +644,7 @@ export default function Landing() {
                 <ul className="space-y-2">
                   <li><a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors">Home</a></li>
                   <li><a href="#features" className="text-gray-400 hover:text-emerald-400 transition-colors">Features</a></li>
-                  <li><a href="#pricing" className="text-gray-400 hover:text-emerald-400 transition-colors">Pricing</a></li>
+                  {/* <li><a href="#pricing" className="text-gray-400 hover:text-emerald-400 transition-colors">Pricing</a></li> */}
                   <li><a href="#demo" className="text-gray-400 hover:text-emerald-400 transition-colors">Demo</a></li>
                 </ul>
               </div>
