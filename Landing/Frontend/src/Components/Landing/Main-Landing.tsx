@@ -1,8 +1,7 @@
-"use client";
+"use client"
 
-import { useState, useEffect, memo, lazy, Suspense } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { debounce } from "lodash";
+import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   GitBranch,
   Github,
@@ -18,31 +17,29 @@ import {
   Redo,
   ChevronLeft,
   ChevronRight,
-} from "lucide-react";
-import { Button } from "../ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Badge } from "../ui/badge";
-import HexagonalBackground from "../Landing/hexagonal-background";
-import HeroSection from "../Landing/hero-section";
-
-// Lazy load heavy components
-const DemoSection = lazy(() => import("../Landing/demo-section"));
-const TeamSection = lazy(() => import("../Landing/team-section"));
+} from "lucide-react"
+import { Button } from "../ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
+import { Badge } from "../ui/badge"
+import HexagonalBackground from "../Landing/hexagonal-background"
+import HeroSection from "../Landing/hero-section"
+import DemoSection from "../Landing/demo-section"
+import TeamSection from "../Landing/team-section"
 
 export default function Landing() {
-  const [extensionActive, setExtensionActive] = useState(true);
-  const [commits, setCommits] = useState<Commit[]>([]);
-  const [currentCommitId, setCurrentCommitId] = useState(0);
-  const [diffVisible, setDiffVisible] = useState(false);
-  const [undoStack, setUndoStack] = useState<number[]>([]);
-  const [redoStack, setRedoStack] = useState<number[]>([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [parallaxOffset, setParallaxOffset] = useState({ x: 0, y: 0 });
-  const [backgroundColor, setBackgroundColor] = useState("#121212");
-  const [headerText, setHeaderText] = useState("Experience WebLenses in Action");
-  const [subheaderText, setSubheaderText] = useState("Interactive demo of version-controlled UI testing");
-  const [ctaVisible, setCtaVisible] = useState(true);
-  const [featuresVisible, setFeaturesVisible] = useState(true);
+  const [extensionActive, setExtensionActive] = useState(true)
+  const [commits, setCommits] = useState<Commit[]>([])
+  const [currentCommitId, setCurrentCommitId] = useState(0)
+  const [diffVisible, setDiffVisible] = useState(false)
+  const [undoStack, setUndoStack] = useState<number[]>([])
+  const [redoStack, setRedoStack] = useState<number[]>([])
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [parallaxOffset, setParallaxOffset] = useState({ x: 0, y: 0 })
+  const [backgroundColor, setBackgroundColor] = useState("#121212")
+  const [headerText, setHeaderText] = useState("Experience WebLenses in Action")
+  const [subheaderText, setSubheaderText] = useState("Interactive demo of version-controlled UI testing")
+  const [ctaVisible, setCtaVisible] = useState(true)
+  const [featuresVisible, setFeaturesVisible] = useState(true)
   const [testimonialCards, setTestimonialCards] = useState([
     {
       id: 1,
@@ -56,23 +53,20 @@ export default function Landing() {
       role: "Frontend Developer",
       text: "The ability to roll back to previous UI states has saved us countless hours of debugging.",
     },
-  ]);
-  const [glassEffect, setGlassEffect] = useState(50);
-  const [animationSpeed, setAnimationSpeed] = useState(50);
-  const [carouselIndex, setCarouselIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // 1 for next, -1 for previous
+  ])
+  const [glassEffect, setGlassEffect] = useState(50)
+  const [animationSpeed, setAnimationSpeed] = useState(50)
+  const [carouselIndex, setCarouselIndex] = useState(0)
 
-  // Debounced mouse move handler
   useEffect(() => {
-    const handleMouseMove = debounce((e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      setParallaxOffset({ x, y });
-    }, 50); // Adjust debounce time as needed
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20
+      const y = (e.clientY / window.innerHeight - 0.5) * 20
+      setParallaxOffset({ x, y })
+    }
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [])
 
   const addCommit = (message: string, aiGenerated = false) => {
     const newCommit = {
@@ -81,101 +75,101 @@ export default function Landing() {
       timestamp: formatTime(new Date()),
       author: aiGenerated ? "AI" : "User",
       aiGenerated,
-    };
-    setRedoStack([]);
-    if (currentCommitId > 0) setUndoStack((prev) => [...prev, currentCommitId]);
-    setCommits([...commits, newCommit]);
-    setCurrentCommitId(newCommit.id);
-    setDiffVisible(true);
-    setTimeout(() => setDiffVisible(false), 3000);
-  };
+    }
+    setRedoStack([])
+    if (currentCommitId > 0) setUndoStack((prev) => [...prev, currentCommitId])
+    setCommits([...commits, newCommit])
+    setCurrentCommitId(newCommit.id)
+    setDiffVisible(true)
+    setTimeout(() => setDiffVisible(false), 3000)
+  }
 
   function formatTime(date: Date) {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
   }
 
   const handleUndo = () => {
     if (undoStack.length > 0) {
-      const prevCommit = undoStack[undoStack.length - 1];
-      setUndoStack((prev) => prev.slice(0, -1));
-      setRedoStack((prev) => [...prev, currentCommitId]);
-      setCurrentCommitId(prevCommit);
-      addCommit(`Undid to commit #${prevCommit}`, true);
+      const prevCommit = undoStack[undoStack.length - 1]
+      setUndoStack((prev) => prev.slice(0, -1))
+      setRedoStack((prev) => [...prev, currentCommitId])
+      setCurrentCommitId(prevCommit)
+      addCommit(`Undid to commit #${prevCommit}`, true)
     }
-  };
+  }
 
   const handleRedo = () => {
     if (redoStack.length > 0) {
-      const nextCommit = redoStack[redoStack.length - 1];
-      setRedoStack((prev) => prev.slice(0, -1));
-      setUndoStack((prev) => [...prev, currentCommitId]);
-      setCurrentCommitId(nextCommit);
-      addCommit(`Redid to commit #${nextCommit}`, true);
+      const nextCommit = redoStack[redoStack.length - 1]
+      setRedoStack((prev) => prev.slice(0, -1))
+      setUndoStack((prev) => [...prev, currentCommitId])
+      setCurrentCommitId(nextCommit)
+      addCommit(`Redid to commit #${nextCommit}`, true)
     }
-  };
+  }
 
   const handleBackgroundChange = (color: string) => {
-    setBackgroundColor(color);
-    addCommit(`Changed background color to ${color}`, false);
-  };
+    setBackgroundColor(color)
+    addCommit(`Changed background color to ${color}`, false)
+  }
 
   const handleHeaderTextChange = (text: string) => {
-    setHeaderText(text);
-    addCommit(`Updated header text to "${text}"`, false);
-  };
+    setHeaderText(text)
+    addCommit(`Updated header text to "${text}"`, false)
+  }
 
   const handleSubheaderTextChange = (text: string) => {
-    setSubheaderText(text);
-    addCommit(`Updated subheader text to "${text}"`, false);
-  };
+    setSubheaderText(text)
+    addCommit(`Updated subheader text to "${text}"`, false)
+  }
 
   const toggleCtaVisibility = () => {
-    setCtaVisible(!ctaVisible);
-    addCommit(`${ctaVisible ? "Hidden" : "Shown"} CTA button`, false);
-  };
+    setCtaVisible(!ctaVisible)
+    addCommit(`${ctaVisible ? "Hidden" : "Shown"} CTA button`, false)
+  }
 
   const toggleFeaturesVisibility = () => {
-    setFeaturesVisible(!featuresVisible);
-    addCommit(`${featuresVisible ? "Hidden" : "Shown"} features section`, false);
-  };
+    setFeaturesVisible(!featuresVisible)
+    addCommit(`${featuresVisible ? "Hidden" : "Shown"} features section`, false)
+  }
 
   const addTestimonialCard = () => {
-    const newId = testimonialCards.length > 0 ? Math.max(...testimonialCards.map((card) => card.id)) + 1 : 1;
+    const newId = testimonialCards.length > 0 ? Math.max(...testimonialCards.map((card) => card.id)) + 1 : 1
     const newCard = {
       id: newId,
       name: `User ${newId}`,
       role: "New Testimonial",
       text: "This is a new testimonial added through WebLenses.",
-    };
-    setTestimonialCards([...testimonialCards, newCard]);
-    addCommit(`Added new testimonial card`, false);
-  };
+    }
+    setTestimonialCards([...testimonialCards, newCard])
+    addCommit(`Added new testimonial card`, false)
+  }
 
   const removeTestimonialCard = () => {
     if (testimonialCards.length > 0) {
-      const newCards = [...testimonialCards];
-      newCards.pop();
-      setTestimonialCards(newCards);
-      addCommit(`Removed testimonial card`, false);
+      const newCards = [...testimonialCards]
+      newCards.pop()
+      setTestimonialCards(newCards)
+      addCommit(`Removed testimonial card`, false)
     }
-  };
+  }
 
   const handleGlassEffectChange = (value: number) => {
-    setGlassEffect(value);
-    addCommit(`Adjusted glassmorphism effect to ${value}%`, false);
-  };
+    setGlassEffect(value)
+    addCommit(`Adjusted glassmorphism effect to ${value}%`, false)
+  }
 
   const handleAnimationSpeedChange = (value: number) => {
-    setAnimationSpeed(value);
-    addCommit(`Changed animation speed to ${value}%`, false);
-  };
+    setAnimationSpeed(value)
+    addCommit(`Changed animation speed to ${value}%`, false)
+  }
 
   const resetAllChanges = () => {
-    setBackgroundColor("#121212");
-    setHeaderText("Experience WebLenses in Action");
-    setSubheaderText("Interactive demo of version-controlled UI testing");
-    setCtaVisible(true);
-    setFeaturesVisible(true);
+    setBackgroundColor("#121212")
+    setHeaderText("Experience WebLenses in Action")
+    setSubheaderText("Interactive demo of version-controlled UI testing")
+    setCtaVisible(true)
+    setFeaturesVisible(true)
     setTestimonialCards([
       {
         id: 1,
@@ -189,21 +183,21 @@ export default function Landing() {
         role: "Frontend Developer",
         text: "The ability to roll back to previous UI states has saved us countless hours of debugging.",
       },
-    ]);
-    setGlassEffect(50);
-    setAnimationSpeed(50);
-    addCommit("Reset all UI changes", false);
-  };
+    ])
+    setGlassEffect(50)
+    setAnimationSpeed(50)
+    addCommit("Reset all UI changes", false)
+  }
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
-  const getAnimationDuration = () => (1 - (animationSpeed / 100) * 0.8).toFixed(1);
-  const getBackdropBlur = () => `blur(${Math.floor(glassEffect / 5)}px)`;
+  const getAnimationDuration = () => (1 - (animationSpeed / 100) * 0.8).toFixed(1)
+  const getBackdropBlur = () => `blur(${Math.floor(glassEffect / 5)}px)`
 
   const featureCards = [
     {
       icon: <Code className="h-6 w-6 text-emerald-400" />,
-      title: "Zero Installation ",
+      title: "Zero Installation 🚀",
       shortDescription: "Works as a Chrome extension—no setup or coding required.",
       description: (
         <div className="space-y-2">
@@ -217,7 +211,7 @@ export default function Landing() {
     },
     {
       icon: <Layers className="h-6 w-6 text-emerald-400" />,
-      title: "Version Control for UI ",
+      title: "Version Control for UI 🔄",
       shortDescription: "Automatically track UI changes like commits in Git.",
       description: (
         <div className="space-y-2">
@@ -231,7 +225,7 @@ export default function Landing() {
     },
     {
       icon: <Users className="h-6 w-6 text-emerald-400" />,
-      title: "Team Collaboration ",
+      title: "Team Collaboration 🤝",
       shortDescription: "Share test histories and commit logs effortlessly.",
       description: (
         <div className="space-y-2">
@@ -245,7 +239,7 @@ export default function Landing() {
     },
     {
       icon: <Code className="h-6 w-6 text-emerald-400" />,
-      title: "DOM Diff Analysis ",
+      title: "DOM Diff Analysis 🔍",
       shortDescription: "Detect and highlight changes in the DOM structure between commits.",
       description: (
         <div className="space-y-2">
@@ -259,7 +253,7 @@ export default function Landing() {
     },
     {
       icon: <Eye className="h-6 w-6 text-emerald-400" />,
-      title: "Visual Regression Testing ",
+      title: "Visual Regression Testing 📸",
       shortDescription: "Compare screenshots between commits to spot UI shifts.",
       description: (
         <div className="space-y-2">
@@ -273,7 +267,7 @@ export default function Landing() {
     },
     {
       icon: <Brain className="h-6 w-6 text-emerald-400" />,
-      title: "AI-Powered Insights",
+      title: "AI-Powered Insights 🤖✨",
       shortDescription: "Coming soon: Detect unexpected UI changes using machine learning.",
       description: (
         <div className="space-y-2">
@@ -286,21 +280,19 @@ export default function Landing() {
       ),
       isFuture: true,
     },
-  ];
+  ]
 
   const handleNext = () => {
-    setDirection(1);
-    setCarouselIndex((prev) => (prev >= featureCards.length - 3 ? 0 : prev + 3));
-  };
+    setCarouselIndex((prev) => (prev >= featureCards.length - 3 ? 0 : prev + 3))
+  }
 
   const handlePrev = () => {
-    setDirection(-1);
-    setCarouselIndex((prev) => (prev === 0 ? featureCards.length - 3 : prev - 3));
-  };
+    setCarouselIndex((prev) => (prev === 0 ? featureCards.length - 3 : prev - 3))
+  }
 
   const slideVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? "100%" : "-100%",
+      x: direction > 0 ? 1000 : -1000,
       opacity: 0,
     }),
     center: {
@@ -308,10 +300,10 @@ export default function Landing() {
       opacity: 1,
     },
     exit: (direction: number) => ({
-      x: direction < 0 ? "100%" : "-100%",
+      x: direction < 0 ? 1000 : -1000,
       opacity: 0,
     }),
-  };
+  }
 
   return (
     <div
@@ -469,48 +461,13 @@ export default function Landing() {
           <section id="features" className="py-16 px-4 bg-gradient-to-b from-transparent to-gray-900/30">
             <div className="container mx-auto">
               <div className="text-center mb-12">
-                {/* Badge with fade-in animation */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  viewport={{ once: true }}
-                >
-                  <Badge variant="outline" className="mb-4 px-4 py-1 border-emerald-500 text-emerald-400">
-                    Features
-                  </Badge>
-                </motion.div>
-
-                {/* Heading with fade-in animation */}
-                <motion.h2
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="text-3xl md:text-4xl font-bold mb-4"
-                >
-                  Why Choose{" "}
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    viewport={{ once: true }}
-                    className="bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent"
-                  >
-                    WebLenses?
-                  </motion.span>
-                </motion.h2>
-
-                {/* Description with fade-in animation */}
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  viewport={{ once: true }}
-                  className="text-gray-400 max-w-2xl mx-auto"
-                >
+                <Badge variant="outline" className="mb-4 px-4 py-1 border-emerald-500 text-emerald-400">Features</Badge>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Why Choose <span className="text-emerald-500">WebLenses</span>?
+                </h2>
+                <p className="text-gray-400 max-w-2xl mx-auto">
                   Everything you need to track, analyze, and manage UI changes during testing
-                </motion.p>
+                </p>
               </div>
               <div className="relative max-w-7xl mx-auto">
                 <div className="flex items-center justify-center gap-6 overflow-hidden">
@@ -525,10 +482,10 @@ export default function Landing() {
                     <ChevronLeft className="h-6 w-6" />
                   </Button>
 
-                  <AnimatePresence initial={false} custom={direction}>
+                  <AnimatePresence initial={false} custom={carouselIndex}>
                     <motion.div
                       key={carouselIndex}
-                      custom={direction}
+                      custom={carouselIndex}
                       variants={slideVariants}
                       initial="enter"
                       animate="center"
@@ -584,17 +541,15 @@ export default function Landing() {
           </section>
         )}
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <DemoSection
-            headerText={headerText}
-            subheaderText={subheaderText}
-            ctaVisible={ctaVisible}
-            testimonialCards={testimonialCards}
-            glassEffect={getBackdropBlur()}
-            animationDuration={getAnimationDuration()}
-          />
-          <TeamSection />
-        </Suspense>
+        <DemoSection
+          headerText={headerText}
+          subheaderText={subheaderText}
+          ctaVisible={ctaVisible}
+          testimonialCards={testimonialCards}
+          glassEffect={getBackdropBlur()}
+          animationDuration={getAnimationDuration()}
+        />
+        <TeamSection />
 
         <footer className="py-12 px-4 border-t border-gray-800 bg-black/50 backdrop-blur-sm">
           <div className="container mx-auto">
@@ -655,24 +610,20 @@ export default function Landing() {
         </footer>
       </div>
     </div>
-  );
+  )
 }
 
-const FeatureCard = memo(({ icon, title, shortDescription, description, isFuture = false, className }: {
+function FeatureCard({ icon, title, shortDescription, description, isFuture = false, className }: {
   icon: React.ReactNode
   title: string
   shortDescription: string
   description: React.ReactNode
   isFuture?: boolean
   className?: string
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
-
+}) {
   return (
     <Card
       className={`group bg-black/40 backdrop-blur-xl border border-gray-800 overflow-hidden transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.05)] hover:border-emerald-900/50 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)] ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <CardHeader className="relative p-4">
         <div className="flex justify-between items-start">
@@ -684,39 +635,21 @@ const FeatureCard = memo(({ icon, title, shortDescription, description, isFuture
         <CardTitle className="mt-2 text-lg group-hover:text-emerald-400 transition-colors">{title}</CardTitle>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <AnimatePresence>
-          {!isHovered && (
-            <motion.div
-              key="shortDescription"
-              initial={{ opacity: 1, height: "auto" }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="text-sm text-gray-400"
-            >
-              {shortDescription}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
+        <p className="text-sm text-gray-400">{shortDescription}</p>
         <motion.div
-          key="fullDescription"
           initial={{ opacity: 0, height: 0 }}
-          animate={{
-            opacity: isHovered ? 1 : 0,
-            height: isHovered ? "auto" : 0,
-          }}
-          transition={{ duration: 0.3 }}
-          className="text-gray-400 overflow-hidden"
+          animate={{ opacity: 0, height: 0 }}
+          whileHover={{ opacity: 1, height: "auto" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="text-gray-400 group-hover:text-gray-300 overflow-hidden"
         >
           {description}
         </motion.div>
-
         <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/0 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       </CardContent>
     </Card>
-  );
-});
+  )
+}
 
 interface Commit {
   id: number
