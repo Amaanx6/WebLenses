@@ -1,67 +1,154 @@
-# **WebLenses** 🚀
+# WEBLENSES🌐
 
-**Version-Controlled UI Testing Extension**
+**AI-Powered Testing Companion with Git-Like Version Control for Web Apps**
 
 
-WebLenses is a **Chrome extension** that enables **UI testers** and **developers** to track, version-control, and analyze **DOM changes** effortlessly. With WebLenses, you can capture UI modifications as **commits**, visualize them, and even roll back to previous states.
-
----
-
-## 🌟 **Key Features**
-
-✅ **Automatic & Manual Commits** – Capture DOM snapshots, user actions, and metadata.
-✅ **Commit Graph Visualization** – Interactive D3.js graph for tracking changes.
-✅ **Diff Analysis** – Compare DOM states and highlight modifications.
-✅ **Rollback & Restore** – Revert UI states partially or fully.
-✅ **Collaboration Tools** – Export/import test histories, Firebase sync (optional).
-✅ **AI Integration (Stretch Goal)** – GPT-generated commit messages, anomaly detection.
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [Team](#team)
+- [License](#license)
 
 ---
 
+## Overview
 
-## 🛠️ **Tech Stack**
+### Problem Statement 💡
+Modern testers lack tools to:
+- Track incremental changes during exploratory testing
+- Visualize test histories like Git commit graphs
+- Rollback to previous states without restarting tests
 
-- **Frontend:** React.js + TypeScript
-- **State Management:** Zustand + Immer
-- **Storage:** IndexedDB
-- **DOM Analysis:** MutationObserver + DiffDOM
-- **Visualization:** D3.js
-- **Bundling:** Webpack
+### Solution: WEBLENSES 🚀
+A browser extension + web platform that brings Git-like version control to manual testing:
+- **AI-Powered Snapshots**: Track DOM changes like code commits
+- **Visual Regression Detection**: Compare UI states across versions
+- **Collaboration Hub**: Share test histories with your team
+
 ---
 
-## 🖥️ **Installation**
+## Features
+
+### Core Capabilities 🔍
+
+| Feature | Description |
+|---------|-------------|
+| **Git-Style Version Control** | Track testing workflows with commits/branches |
+| **AI-Driven DOM Analysis** | Gemini-powered change detection & explanations |
+| **Accessibility Auditor** | Real-time WCAG compliance checks |
+| **Mind Map Visualization** | Auto-generated site structure maps |
+
+### Browser Extension Features 🌐
+- **Smart Snapshots**:
+  - Automatic DOM capture every 30s (configurable)
+  - Manual commits with messages (e.g., "Tested checkout flow")
+- **AI Chat Assistant**:
+  - Context-aware troubleshooting
+  - Natural language test guidance
+- **Visual Diff Tool**:
+  - Side-by-side UI comparisons
+  - Element-level change highlighting
 
 
-### **2️⃣ Manual Installation (Development Mode):**
+### Web Platform Features 🖥
+
+- **Commit Graph Explorer**:
+  - Interactive D3.js visualization
+  - Branch merging/compare functionality
+- **Risk Heatmaps**:
+  - Change frequency visualization
+  - AI-predicted risk areas
+- **Collaboration Tools**:
+  - Team annotation system
+  - JSON history export/import
+
+
+---
+
+## Tech Stack 🛠️
+
+### Frontend
+
+- **Extension**: React + TypeScript, Tailwind CSS
+- **State Management**: Zustand + Immer
+- **Visualization**: D3.js, Framer Motion
+
+
+### Backend
+
+- **Core**: Node.js, Express
+- **Database**: MongoDB (Snapshot metadata)
+- **AI Services**: Gemini API, Custom NLP Models
+
+
+### Browser Layer
+- **DOM Capture**: MutationObserver API
+- **Storage**: IndexedDB (local), Firebase (sync)
+- **Browser API**: Chrome Extensions API
+
+
+
+
+## Installation 💻
+
+**Browser Extension**:
+1. Clone repo:
+   ```bash
+   git clone https://github.com/your-org/weblenses.git
+   ```
+2. Build extension:
+   ```bash
+   cd extension
+   npm install && npm run build
+   ```
+3. Load unpacked extension in Chrome:
+   - Navigate to `chrome://extensions`
+   - Enable "Developer mode"
+   - Click "Load unpacked" and select `/dist` folder
+
+**Web Platform**:
 ```bash
-git clone [https://github.com/your-repo/WebLenses.git](https://github.com/Mohfazam/WebLenses.git)
-cd WebLenses
-npm install
-npm run build
+cd web-platform
+npm install && npm start
 ```
-Then, load the `dist` folder as an **unpacked extension** in Chrome.
 
 ---
 
-## 🚀 **How It Works**
+## Usage 🛠️
 
-1. **Activate WebLenses** on any website.
-2. **Interact with the page** (click buttons, modify text, etc.).
-3. WebLenses will **log UI changes as commits** in real-time.
-4. **View commit history** and analyze **DOM changes**.
-5. **Restore previous UI states** when needed.
+1. **Capture Snapshots**:
+   - Click extension icon → "Start Recording"
+   - Perform manual tests as normal
+
+2. **Create Commit**:
+
+3. **Analyze Changes**:
+
+---
+
+
+## Contributing 🤝
+
+1. Fork the repository
+2. Create feature branch:
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. Commit changes:
+   ```bash
+   git commit -m 'Add some amazing feature'
+   ```
+4. Push to branch:
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. Open Pull Request
 
 ---
 
 
-## 📜 **License**
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## 🌎 **Contribute & Support**
-
-We welcome contributions! Feel free to fork this repo, submit issues, or make a PR. 
-
-⭐ **Star this repo if you find WebLenses useful!** ⭐
