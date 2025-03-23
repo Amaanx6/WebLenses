@@ -6,6 +6,7 @@ import { GitCommit, PaintBucket, Type, Eye, EyeOff, Layers } from "lucide-react"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Badge } from "../ui/badge"
+import HexagonalBackground from './hexagonal-background'
 
 import { useNavigate } from "react-router-dom"
 
