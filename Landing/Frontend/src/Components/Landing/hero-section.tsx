@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { Play, GitPullRequestArrow } from "lucide-react";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
+import { Badge,  } from "../ui/badge";
 import { useNavigate } from "react-router-dom";
 import { memo } from "react";
 
@@ -60,17 +60,17 @@ const HeroSection = memo(() => {
             <Button
               size="lg"
               className="bg-emerald-500 hover:bg-emerald-600 transition-all duration-300 relative"
-              onClick={() => navigate("/mind")}
+              onClick={() => navigate("/diff")}
             >
-              <span className="relative z-10">Get Started</span>
+              <span className="relative z-10">DiffArchive</span>
               <span className="absolute inset-0 rounded-md overflow-hidden">
                 <span className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 opacity-0 hover:opacity-20 transition-opacity duration-300"></span>
                 <span className="absolute -inset-[3px] bg-gradient-to-r from-emerald-500 to-blue-500 opacity-0 hover:opacity-30 blur-md transition-opacity duration-300"></span>
               </span>
             </Button>
             <Button size="lg" variant="outline" className="group relative overflow-hidden">
-              <Play className="h-4 w-4 mr-2" />
-              <span className="relative z-10">Watch Demo</span>
+              <GitPullRequestArrow className="h-4 w-4 mr-2" />
+              <span onClick={() => navigate("/diff")} className="relative z-10">Snap Map</span>
               <span className="absolute inset-0 rounded-md overflow-hidden">
                 <span className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
               </span>
