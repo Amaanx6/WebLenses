@@ -469,13 +469,48 @@ export default function Landing() {
           <section id="features" className="py-16 px-4 bg-gradient-to-b from-transparent to-gray-900/30">
             <div className="container mx-auto">
               <div className="text-center mb-12">
-                <Badge variant="outline" className="mb-4 px-4 py-1 border-emerald-500 text-emerald-400">Features</Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Why Choose <span className="text-emerald-500">WebLenses?</span>
-                </h2>
-                <p className="text-gray-400 max-w-2xl mx-auto">
+                {/* Badge with fade-in animation */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  viewport={{ once: true }}
+                >
+                  <Badge variant="outline" className="mb-4 px-4 py-1 border-emerald-500 text-emerald-400">
+                    Features
+                  </Badge>
+                </motion.div>
+
+                {/* Heading with fade-in animation */}
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className="text-3xl md:text-4xl font-bold mb-4"
+                >
+                  Why Choose{" "}
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                    viewport={{ once: true }}
+                    className="bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent"
+                  >
+                    WebLenses?
+                  </motion.span>
+                </motion.h2>
+
+                {/* Description with fade-in animation */}
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  viewport={{ once: true }}
+                  className="text-gray-400 max-w-2xl mx-auto"
+                >
                   Everything you need to track, analyze, and manage UI changes during testing
-                </p>
+                </motion.p>
               </div>
               <div className="relative max-w-7xl mx-auto">
                 <div className="flex items-center justify-center gap-6 overflow-hidden">
