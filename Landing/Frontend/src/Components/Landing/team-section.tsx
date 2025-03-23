@@ -1,18 +1,16 @@
-"use client";
+"use client"
 
-import { motion } from "framer-motion";
-import { Github, Twitter, Linkedin, User } from "lucide-react";
-import { Card, CardContent } from "../ui/card";
-import { Badge } from "../ui/badge";
-import { memo } from "react";
+import { motion } from "framer-motion"
+import { Github, Twitter, Linkedin, User } from "lucide-react"
+import { Card, CardContent } from "../ui/card"
+import { Badge } from "../ui/badge"
 
-const TeamSection = memo(() => {
+export default function TeamSection() {
   const teamMembers = [
     {
       name: "Mohammed Sarwar Khan",
       role: "Team Lead",
-      description:
-        "Building dreams with the MERN stack's might, crafting apps that shine so bright. A 4rd-sem intern on a soaring flight, coding stories deep into the night.",
+      description: "Building dreams with the MERN stack's might, crafting apps that shine so bright. A 4rd-sem intern on a soaring flight, coding stories deep into the night.",
       social: {
         twitter: "https://x.com/mohfazam",
         github: "https://github.com/Mohfazam",
@@ -22,8 +20,7 @@ const TeamSection = memo(() => {
     {
       name: "Md Mubashiruddin",
       role: "Lead Developer",
-      description:
-        "Expert in implementing complex features and maintaining code quality through rigorous development practices.",
+      description: "Expert in implementing complex features and maintaining code quality through rigorous development practices.",
       social: {
         twitter: "https://x.com/amaanx_6",
         github: "https://github.com/amaanx6",
@@ -33,15 +30,14 @@ const TeamSection = memo(() => {
     {
       name: "Mohammed Talha Ahmed Siddique",
       role: "Lead Designer",
-      description:
-        "An undergrad refining MERN skills, ensuring seamless deployments with DevOps while crafting scalable and efficient digital solutions.",
+      description: "An undergrad refining skills with MERN in hand, deploying apps with DevOps to take a stand. Crafting solutions that work across the land, the digital world is mine to command.",
       social: {
-        twitter: "https://x.com/talha_1x1",
+        twitter: "#",
         github: "https://github.com/talhadevelopes",
         linkedin: "https://www.linkedin.com/in/mohammed-talha-ahmed-6871a42ab/",
       },
     },
-  ];
+  ]
 
   return (
     <section id="team" className="py-16 px-4">
@@ -84,24 +80,15 @@ const TeamSection = memo(() => {
                     <div className="flex justify-center mt-4 space-x-4">
                       <a
                         href={member.social.twitter}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="text-gray-400 hover:text-emerald-400 transition-colors"
                       >
                         <Twitter className="h-5 w-5" />
                       </a>
-                      <a
-                        href={member.social.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-emerald-400 transition-colors"
-                      >
+                      <a href={member.social.github} className="text-gray-400 hover:text-emerald-400 transition-colors">
                         <Github className="h-5 w-5" />
                       </a>
                       <a
                         href={member.social.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="text-gray-400 hover:text-emerald-400 transition-colors"
                       >
                         <Linkedin className="h-5 w-5" />
@@ -115,7 +102,5 @@ const TeamSection = memo(() => {
         </div>
       </div>
     </section>
-  );
-});
-
-export default TeamSection;
+  )
+}
