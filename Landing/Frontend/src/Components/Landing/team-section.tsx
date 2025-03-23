@@ -1,16 +1,18 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Github, Twitter, Linkedin, User } from "lucide-react"
-import { Card, CardContent } from "../ui/card"
-import { Badge } from "../ui/badge"
+import { motion } from "framer-motion";
+import { Github, Twitter, Linkedin, User } from "lucide-react";
+import { Card, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { memo } from "react";
 
-export default function TeamSection() {
+const TeamSection = memo(() => {
   const teamMembers = [
     {
       name: "Mohammed Sarwar Khan",
       role: "Team Lead",
-      description: "Building dreams with the MERN stack's might, crafting apps that shine so bright. A 4rd-sem intern on a soaring flight, coding stories deep into the night.",
+      description:
+        "Building dreams with the MERN stack's might, crafting apps that shine so bright. A 4rd-sem intern on a soaring flight, coding stories deep into the night.",
       social: {
         twitter: "https://x.com/mohfazam",
         github: "https://github.com/Mohfazam",
@@ -20,7 +22,8 @@ export default function TeamSection() {
     {
       name: "Md Mubashiruddin",
       role: "Lead Developer",
-      description: "Expert in implementing complex features and maintaining code quality through rigorous development practices.",
+      description:
+        "Expert in implementing complex features and maintaining code quality through rigorous development practices.",
       social: {
         twitter: "https://x.com/amaanx_6",
         github: "https://github.com/amaanx6",
@@ -30,14 +33,15 @@ export default function TeamSection() {
     {
       name: "Mohammed Talha Ahmed Siddique",
       role: "Lead Designer",
-      description: "An undergrad refining MERN skills, ensuring seamless deployments with DevOps while crafting scalable and efficient digital solutions.",
+      description:
+        "An undergrad refining MERN skills, ensuring seamless deployments with DevOps while crafting scalable and efficient digital solutions.",
       social: {
-        twitter: "#",
+        twitter: "https://x.com/talha_1x1",
         github: "https://github.com/talhadevelopes",
         linkedin: "https://www.linkedin.com/in/mohammed-talha-ahmed-6871a42ab/",
       },
     },
-  ]
+  ];
 
   return (
     <section id="team" className="py-16 px-4">
@@ -80,15 +84,24 @@ export default function TeamSection() {
                     <div className="flex justify-center mt-4 space-x-4">
                       <a
                         href={member.social.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-gray-400 hover:text-emerald-400 transition-colors"
                       >
                         <Twitter className="h-5 w-5" />
                       </a>
-                      <a href={member.social.github} className="text-gray-400 hover:text-emerald-400 transition-colors">
+                      <a
+                        href={member.social.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-400 hover:text-emerald-400 transition-colors"
+                      >
                         <Github className="h-5 w-5" />
                       </a>
                       <a
                         href={member.social.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-gray-400 hover:text-emerald-400 transition-colors"
                       >
                         <Linkedin className="h-5 w-5" />
@@ -102,5 +115,7 @@ export default function TeamSection() {
         </div>
       </div>
     </section>
-  )
-}
+  );
+});
+
+export default TeamSection;

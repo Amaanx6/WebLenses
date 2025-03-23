@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { debounce } from "lodash";
 import {
   GitBranch,
   Github,
@@ -23,8 +24,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import HexagonalBackground from "../Landing/hexagonal-background";
 import HeroSection from "../Landing/hero-section";
-import DemoSection from "../Landing/demo-section";
-import TeamSection from "../Landing/team-section";
+
+// Lazy load heavy components
+const DemoSection = lazy(() => import("../Landing/demo-section"));
+const TeamSection = lazy(() => import("../Landing/team-section"));
 
 export default function Landing() {
   const [extensionActive, setExtensionActive] = useState(true);
@@ -59,12 +62,14 @@ export default function Landing() {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [direction, setDirection] = useState(0); // 1 for next, -1 for previous
 
+  // Debounced mouse move handler
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = debounce((e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 20;
       const y = (e.clientY / window.innerHeight - 0.5) * 20;
       setParallaxOffset({ x, y });
-    };
+    }, 50); // Adjust debounce time as needed
+
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
@@ -193,7 +198,7 @@ export default function Landing() {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   const getAnimationDuration = () => (1 - (animationSpeed / 100) * 0.8).toFixed(1);
-  const getBackdropBlur = () => `blur(${Math.floor(glassEffect / 5)}px`;
+  const getBackdropBlur = () => `blur(${Math.floor(glassEffect / 5)}px)`;
 
   const featureCards = [
     {
@@ -544,15 +549,17 @@ export default function Landing() {
           </section>
         )}
 
-        <DemoSection
-          headerText={headerText}
-          subheaderText={subheaderText}
-          ctaVisible={ctaVisible}
-          testimonialCards={testimonialCards}
-          glassEffect={getBackdropBlur()}
-          animationDuration={getAnimationDuration()}
-        />
-        <TeamSection />
+        <Suspense fallback={<div>Loading...</div>}>
+          <DemoSection
+            headerText={headerText}
+            subheaderText={subheaderText}
+            ctaVisible={ctaVisible}
+            testimonialCards={testimonialCards}
+            glassEffect={getBackdropBlur()}
+            animationDuration={getAnimationDuration()}
+          />
+          <TeamSection />
+        </Suspense>
 
         <footer className="py-12 px-4 border-t border-gray-800 bg-black/50 backdrop-blur-sm">
           <div className="container mx-auto">
@@ -616,14 +623,14 @@ export default function Landing() {
   );
 }
 
-function FeatureCard({ icon, title, shortDescription, description, isFuture = false, className }: {
+const FeatureCard = memo(({ icon, title, shortDescription, description, isFuture = false, className }: {
   icon: React.ReactNode
   title: string
   shortDescription: string
   description: React.ReactNode
   isFuture?: boolean
   className?: string
-}) {
+}) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -674,7 +681,7 @@ function FeatureCard({ icon, title, shortDescription, description, isFuture = fa
       </CardContent>
     </Card>
   );
-}
+});
 
 interface Commit {
   id: number
