@@ -142,7 +142,7 @@ const LandingPage = () => {
       {/* Interactive Demo Section */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-8">Try It Live</h2>
+          <h2 className="text-3xl font-bold mb-8">Try It Live!</h2>
           <div className="max-w-2xl mx-auto bg-gray-800/30 p-8 rounded-xl border border-gray-700/30">
             <motion.div
               whileHover={{ scale: 1.02 }}
