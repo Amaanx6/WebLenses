@@ -30,7 +30,7 @@ export default function TeamSection() {
     {
       name: "Mohammed Talha Ahmed Siddique",
       role: "Lead Designer",
-      description: "An undergrad refining skills with MERN in hand, deploying apps with DevOps to take a stand. Crafting solutions that work across the land, the digital world is mine to command.",
+      description: "An undergrad refining MERN skills, ensuring seamless deployments with DevOps while crafting scalable and efficient digital solutions.",
       social: {
         twitter: "#",
         github: "https://github.com/talhadevelopes",
