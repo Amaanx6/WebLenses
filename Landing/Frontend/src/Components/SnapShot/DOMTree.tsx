@@ -7,7 +7,11 @@ import ReactFlow, {
   useEdgesState, 
   Node, 
   Edge,
-  MarkerType
+  MarkerType,
+  ConnectionLineType,
+  BackgroundVariant,
+  Position,
+  Handle
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { hierarchy, tree } from 'd3-hierarchy';
@@ -26,19 +30,40 @@ interface DOMTreeProps {
 }
 
 const nodeStyle = {
-  background: '#1a1a2e',
+  background: 'linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(32, 32, 56, 0.95) 100%)',
   border: '2px solid #4FD1C5',
-  borderRadius: '8px',
-  boxShadow: '0 4px 6px rgba(79, 209, 197, 0.2)',
+  borderRadius: '12px',
+  boxShadow: '0 4px 20px rgba(79, 209, 197, 0.15)',
+  backdropFilter: 'blur(8px)',
+  padding: '12px 20px',
+};
+
+const handleStyle = {
+  width: '8px',
+  height: '8px',
+  background: '#4FD1C5',
+  border: '2px solid #2D3748'
 };
 
 const MindmapNode = ({ data }: any) => (
-  <div className="px-4 py-2" style={nodeStyle}>
-    <div className="flex items-center gap-2">
-      <div className="w-2 h-2 bg-emerald-400 rounded-full" />
-      <span className="font-mono text-sm text-gray-100">{data.label}</span>
+  <>
+    <Handle
+      type="target"
+      position={Position.Left}
+      style={handleStyle}
+    />
+    <div style={nodeStyle}>
+      <div className="flex items-center gap-3">
+        <div className="w-3 h-3 bg-emerald-400 rounded-full shadow-lg shadow-emerald-400/20" />
+        <span className="font-mono text-sm font-medium text-gray-100">{data.label}</span>
+      </div>
     </div>
-  </div>
+    <Handle
+      type="source"
+      position={Position.Right}
+      style={handleStyle}
+    />
+  </>
 );
 
 const nodeTypes = { mindmap: MindmapNode };
@@ -66,8 +91,8 @@ export function DOMTree({ html, onClose }: DOMTreeProps) {
 
       const rootNode = parseNode(doc.documentElement);
       const layout = tree<DOMNode>()
-        .nodeSize([300, 150])
-        .separation(() => 1);
+        .nodeSize([200, 250])
+        .separation(() => 2);
 
       const hierarchyRoot = hierarchy(rootNode);
       const treeLayout = layout(hierarchyRoot);
@@ -76,12 +101,16 @@ export function DOMTree({ html, onClose }: DOMTreeProps) {
       const reactFlowEdges: Edge[] = [];
 
       treeLayout.descendants().forEach((node) => {
+        const label = node.data.textContent 
+          ? `${node.data.tag} - ${node.data.textContent.slice(0, 20)}${node.data.textContent.length > 20 ? '...' : ''}`
+          : node.data.tag;
+
         reactFlowNodes.push({
           id: node.data.id,
           type: 'mindmap',
           position: { x: node.y, y: node.x },
-          data: { label: node.data.tag },
-          style: { width: 160 }
+          data: { label },
+          style: { width: 'auto' }
         });
 
         if (node.parent) {
@@ -89,18 +118,19 @@ export function DOMTree({ html, onClose }: DOMTreeProps) {
             id: `edge-${node.parent.data.id}-${node.data.id}`,
             source: node.parent.data.id,
             target: node.data.id,
-            animated: true,
+            type: 'step',
             style: {
-              stroke: '#4FFB73',
+              stroke: '#4FD1C5',
               strokeWidth: 3,
-              filter: 'drop-shadow(0 0 2px rgba(79, 251, 115, 0.5))'
+              opacity: 0.8,
             },
             markerEnd: {
               type: MarkerType.ArrowClosed,
-              color: '#4FFB73',
               width: 20,
-              height: 20
+              height: 20,
+              color: '#4FD1C5',
             },
+            animated: true
           });
         }
       });
@@ -114,16 +144,16 @@ export function DOMTree({ html, onClose }: DOMTreeProps) {
   }, [html]);
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-gray-900 rounded-xl border border-gray-700/50 w-full max-w-6xl max-h-[90vh] overflow-hidden">
-        <div className="p-4 border-b border-gray-700/50 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Network className="w-5 h-5 text-emerald-400" />
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-gray-900/90 backdrop-blur-xl rounded-xl border border-gray-700/50 w-full max-w-7xl max-h-[90vh] overflow-hidden shadow-2xl">
+        <div className="p-4 border-b border-gray-700/50 flex items-center justify-between bg-gray-800/50">
+          <div className="flex items-center gap-3">
+            <Network className="w-6 h-6 text-emerald-400" />
             <h3 className="text-lg font-semibold text-white">DOM Mindmap</h3>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800/50 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-700/50 rounded-lg transition-colors"
           >
             <X className="w-5 h-5 text-gray-400" />
           </button>
@@ -138,19 +168,28 @@ export function DOMTree({ html, onClose }: DOMTreeProps) {
             <ReactFlow
               nodes={nodes}
               edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
               nodeTypes={nodeTypes}
               fitView
-              minZoom={0.5}
-              maxZoom={2}
+              minZoom={0.3}
+              maxZoom={1.5}
               nodesDraggable={false}
+              proOptions={{ hideAttribution: true }}
+              className="bg-gray-900/50"
+              defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
             >
               <Background 
-                color="#2d3748" 
-                gap={40} 
-                className="opacity-20"
-                variant="dots"
+                color="#4FD1C5" 
+                gap={24} 
+                size={1.5}
+                className="opacity-[0.02]"
+                variant={BackgroundVariant.Dots}
               />
-              <Controls className="bg-gray-800 p-1.5 rounded-md border border-gray-700/50" />
+              <Controls 
+                className="bg-gray-800/90 p-2 rounded-xl border border-gray-700/50 shadow-xl backdrop-blur-sm"
+                showInteractive={false}
+              />
             </ReactFlow>
           )}
         </div>

@@ -1,14 +1,16 @@
 // components/Dashboard.tsx
 import { useState } from 'react';
 import Chatbot from './chatbot/Chatbot';
-import Tracker from './DOMTracker/DOMTracker'; 
+import Tracker from './DOMTracker/DOMTracker';
+import AccessibilityQuickCheck from './Accessibility/AccessibilityQuickCheck';
+import { AlertCircle } from 'lucide-react';
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState<'chatbot' | 'tracker' | 'feature3' | 'feature4'>('chatbot');
+  const [activeTab, setActiveTab] = useState<'chatbot' | 'tracker' | 'accessibility' | 'feature4'>('chatbot');
 
   return (
     <div className="fixed inset-0 z-[9999] flex bg-gray-900/80 backdrop-blur-lg">
-      {/* Sidebar */}
+      {/* Sidebar Navigation */}
       <div className="w-16 border-r border-gray-700/50 flex flex-col items-center py-4 space-y-4">
         {/* Chatbot Button */}
         <button
@@ -24,7 +26,7 @@ const Dashboard = () => {
           </svg>
         </button>
 
-        {/* Website Tracker Button */}
+        {/* DOM Tracker Button */}
         <button
           className={`p-2 rounded-lg transition-all duration-300 ${
             activeTab === 'tracker'
@@ -38,28 +40,37 @@ const Dashboard = () => {
           </svg>
         </button>
 
-        {/* Disabled Feature Buttons */}
-        {[3, 4].map((num) => (
-          <button
-            key={num}
-            className="p-2 rounded-lg text-gray-400 opacity-50 cursor-not-allowed relative group"
-            disabled
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            <span className="absolute left-full ml-2 px-2 py-1 bg-gray-700 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-              Coming Soon
-            </span>
-          </button>
-        ))}
+        {/* Accessibility Check Button */}
+        <button
+          className={`p-2 rounded-lg transition-all duration-300 ${
+            activeTab === 'accessibility'
+              ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+              : 'text-gray-400 hover:bg-gray-700/30'
+          }`}
+          onClick={() => setActiveTab('accessibility')}
+        >
+          <AlertCircle className="w-6 h-6" />
+        </button>
+
+        {/* Coming Soon Feature */}
+        <button
+          className="p-2 rounded-lg text-gray-400 opacity-50 cursor-not-allowed relative group"
+          disabled
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          <span className="absolute left-full ml-2 px-2 py-1 bg-gray-700 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            Coming Soon
+          </span>
+        </button>
       </div>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
         {activeTab === 'chatbot' && <Chatbot />}
         {activeTab === 'tracker' && <Tracker />}
-        {/* Add other feature components here when ready */}
+        {activeTab === 'accessibility' && <AccessibilityQuickCheck />}
       </div>
     </div>
   );
