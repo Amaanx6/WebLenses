@@ -1,88 +1,84 @@
-"use client";
+"use client"
 
-import { useState, useEffect, memo, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { debounce } from "lodash";
-import { GitCommit, PaintBucket, Type, Eye, EyeOff, Layers } from "lucide-react";
-import { Button } from "../ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { Badge } from "../ui/badge";
-import HexagonalBackground from './hexagonal-background';
-import { useNavigate } from "react-router-dom";
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { GitCommit, PaintBucket, Type, Eye, EyeOff, Layers } from "lucide-react"
+import { Button } from "../ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Badge } from "../ui/badge"
+import HexagonalBackground from './hexagonal-background'
+
+import { useNavigate } from "react-router-dom"
+
 
 interface DemoSectionProps {
-  headerText: string;
-  subheaderText: string;
-  ctaVisible: boolean;
-  testimonialCards: { id: number; name: string; role: string; text: string }[];
-  glassEffect: string;
-  animationDuration: string;
+  headerText: string
+  subheaderText: string
+  ctaVisible: boolean
+  testimonialCards: { id: number; name: string; role: string; text: string }[]
+  glassEffect: string
+  animationDuration: string
 }
 
-const DemoSection = memo(({
+export default function DemoSection({
   headerText,
   subheaderText,
   ctaVisible,
   testimonialCards,
   glassEffect,
   animationDuration,
-}: DemoSectionProps) => {
-  const [backgroundColor, setBackgroundColor] = useState("#1e1e1e");
-  const [headingText, setHeadingText] = useState(headerText);
-  const [isElementVisible, setIsElementVisible] = useState(true);
+}: DemoSectionProps) {
+  const [backgroundColor, setBackgroundColor] = useState("#1e1e1e")
+  const [headingText, setHeadingText] = useState(headerText)
+  const [isElementVisible, setIsElementVisible] = useState(true)
   const [commits, setCommits] = useState<{ message: string; timestamp: string }[]>([
     { message: "Initial state", timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) },
-  ]);
-  const [parallaxOffset, setParallaxOffset] = useState({ x: 0, y: 0 });
+  ])
+  const [parallaxOffset, setParallaxOffset] = useState({ x: 0, y: 0 })
+
+  // Add mouse move handler for parallax effect
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 20
+    const y = (e.clientY / window.innerHeight - 0.5) * 20
+    setParallaxOffset({ x, y })
+  }
+
+  const addCommit = (message: string) => {
+    const now = new Date()
+    const timestamp = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+    setCommits([...commits, { message, timestamp }])
+  }
+
+  const handleBackgroundChange = () => {
+    const colors = ["#1e1e1e", "#0f172a", "#1a2e35", "#1e1b4b", "#312e81"]
+    const currentIndex = colors.indexOf(backgroundColor)
+    const nextIndex = (currentIndex + 1) % colors.length
+    setBackgroundColor(colors[nextIndex])
+    addCommit(`Changed background color to ${colors[nextIndex]}`)
+  }
+
+  const handleTextChange = () => {
+    const texts = ["Interactive Demo", "WebLenses in Action", "Try It Yourself", "See How It Works"]
+    const currentIndex = texts.indexOf(headingText)
+    const nextIndex = (currentIndex + 1) % texts.length
+    setHeadingText(texts[nextIndex])
+    addCommit(`Updated heading text to "${texts[nextIndex]}"`)
+  }
 
   const navigate = useNavigate();
-
-  // Debounced mouse move handler
-  useEffect(() => {
-    const handleMouseMove = debounce((e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      setParallaxOffset({ x, y });
-    }, 50); // Adjust debounce time as needed
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  const addCommit = useCallback((message: string) => {
-    const now = new Date();
-    const timestamp = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    setCommits((prev) => [...prev, { message, timestamp }]);
-  }, []);
-
-  const handleBackgroundChange = useCallback(() => {
-    const colors = ["#1e1e1e", "#0f172a", "#1a2e35", "#1e1b4b", "#312e81"];
-    const currentIndex = colors.indexOf(backgroundColor);
-    const nextIndex = (currentIndex + 1) % colors.length;
-    setBackgroundColor(colors[nextIndex]);
-    addCommit(`Changed background color to ${colors[nextIndex]}`);
-  }, [backgroundColor, addCommit]);
-
-  const handleTextChange = useCallback(() => {
-    const texts = ["Interactive Demo", "WebLenses in Action", "Try It Yourself", "See How It Works"];
-    const currentIndex = texts.indexOf(headingText);
-    const nextIndex = (currentIndex + 1) % texts.length;
-    setHeadingText(texts[nextIndex]);
-    addCommit(`Updated heading text to "${texts[nextIndex]}"`);
-  }, [headingText, addCommit]);
-
-  const toggleElementVisibility = useCallback(() => {
-    setIsElementVisible((prev) => !prev);
-    addCommit(`${isElementVisible ? "Hidden" : "Shown"} demo element`);
-  }, [isElementVisible, addCommit]);
+  const toggleElementVisibility = () => {
+    setIsElementVisible(!isElementVisible)
+    addCommit(`${isElementVisible ? "Hidden" : "Shown"} demo element`)
+  }
 
   return (
     <section
       id="demo"
       className="py-16 px-4 relative overflow-hidden bg-gradient-to-b from-transparent to-gray-900/30"
       style={{ backdropFilter: glassEffect }}
+      onMouseMove={handleMouseMove}
     >
-      {/* Hexagonal Background */}
+      {/* Hexagonal Background (unchanged from original) */}
       <HexagonalBackground scrollEffect={false} parallaxOffset={parallaxOffset} />
 
       <div className="container mx-auto relative z-10">
@@ -104,6 +100,7 @@ const DemoSection = memo(({
               Get Started
             </Button>
           )}
+
         </motion.div>
 
         {/* Centered Interactive Demo Card */}
@@ -298,7 +295,5 @@ const DemoSection = memo(({
         )}
       </div>
     </section>
-  );
-});
-
-export default DemoSection;
+  )
+}
