@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Badge } from "../ui/badge"
 import HexagonalBackground from './hexagonal-background'
 
-import { useNavigate } from "react-router-dom"
 
 
 interface DemoSectionProps {
@@ -23,7 +22,6 @@ interface DemoSectionProps {
 export default function DemoSection({
   headerText,
   subheaderText,
-  ctaVisible,
   testimonialCards,
   glassEffect,
   animationDuration,
@@ -65,7 +63,7 @@ export default function DemoSection({
     addCommit(`Updated heading text to "${texts[nextIndex]}"`)
   }
 
-  const navigate = useNavigate();
+  // Removed unused navigate declaration
   const toggleElementVisibility = () => {
     setIsElementVisible(!isElementVisible)
     addCommit(`${isElementVisible ? "Hidden" : "Shown"} demo element`)
@@ -95,11 +93,7 @@ export default function DemoSection({
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{headerText}</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">{subheaderText}</p>
 
-          {ctaVisible && (
-            <Button onClick={() => navigate("/mind")} className="mt-6 bg-emerald-500 hover:bg-emerald-600">
-              Get Started
-            </Button>
-          )}
+          
 
         </motion.div>
 
@@ -285,14 +279,7 @@ export default function DemoSection({
           </div>
         </div>
 
-        {/* Get Started Button */}
-        {ctaVisible && (
-          <div className="flex justify-center mt-12">
-            <Button className="bg-emerald-500 hover:bg-emerald-600">
-              Get Started
-            </Button>
-          </div>
-        )}
+      
       </div>
     </section>
   )
