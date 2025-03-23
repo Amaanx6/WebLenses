@@ -39,29 +39,34 @@ export function SnapshotList({ snapshots, isLoading, error, onViewMindmap }: Sna
         {snapshots.map((snapshot) => (
           <div
             key={snapshot._id}
-            className="glassmorphism rounded-lg p-4 hover:bg-gray-800/50 transition-all duration-300 border border-gray-700/50 group relative"
+            className="glassmorphism rounded-lg p-4 hover:bg-gray-800/50 transition-all duration-300 border border-gray-700/50 group relative overflow-hidden"
             onMouseEnter={() => setHoveredId(snapshot._id)}
             onMouseLeave={() => setHoveredId(null)}
           >
             <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-medium text-emerald-400 truncate max-w-md group-hover:text-emerald-300 transition-colors">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-medium text-emerald-400 truncate group-hover:text-emerald-300 transition-colors">
                   {snapshot.url}
                 </h3>
                 <p className="text-sm text-gray-400">
                   {new Date(snapshot.createdAt).toLocaleString()}
                 </p>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 ml-4">
                 <Activity className="w-4 h-4 text-blue-400" />
-                <span className="text-xs bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full border border-blue-700/50">
+                <span className="text-xs bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full border border-blue-700/50 whitespace-nowrap">
                   {snapshot.content.length} chars
                 </span>
               </div>
             </div>
-            
-            {hoveredId === snapshot._id && (
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-2">
+
+            {/* Buttons Slide Down Below Character Count */}
+            <div
+              className={`transition-all duration-300 overflow-hidden ${
+                hoveredId === snapshot._id ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <div className="flex items-center justify-end space-x-2 mt-2">
                 <button
                   onClick={() => onViewMindmap(snapshot)}
                   className="p-2 bg-emerald-500/20 rounded-lg hover:bg-emerald-500/30 transition-colors"
@@ -72,7 +77,7 @@ export function SnapshotList({ snapshots, isLoading, error, onViewMindmap }: Sna
                   <Eye className="w-4 h-4 text-blue-400" />
                 </button>
               </div>
-            )}
+            </div>
           </div>
         ))}
       </div>
